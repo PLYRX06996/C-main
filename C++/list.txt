@@ -1,0 +1,147 @@
+Introduction to C++, Installing VS Code, g++ & more  #1
+
+Basic Structure of a C++ Program  #2
+
+Variables & Comments in C++ in Hindi  #3
+
+Variable Scope & Data Types in C++ in Hindi  #4
+
+C++ Basic Input/Output & More  #5
+
+C++ Header files & Operators  #6
+
+C++ Reference Variables & Typecasting  #7
+
+Constants, Manipulators & Operator Precedence  #8
+
+C++ Control Structures, If Else and Switch-Case Statement  #9
+
+For, While and do-while loops in C++  #10
+
+Break and Continue Statements in C++  #11
+
+Pointers in C++  #12
+
+Arrays & Pointers Arithmetic in C++  #13
+
+Structures, Unions & Enums in C++  #14
+
+Functions & Function Prototypes in C++  #15
+
+Call by Value & Call by Reference in C++  #16
+
+Inline Functions, Default Arguments & Constant Arguments in C++  #17
+
+Recursions & Recursive Functions in C++  #18
+
+Function Overloading with Examples in C++  #19
+
+Object Oriented Programming in C++  #20
+
+Classes, Public and Private access modifiers in C++  #21
+
+OOPs Recap & Nesting of Member Functions in C++  #22
+
+C++ Objects Memory Allocation & using Arrays in Classes  #23
+
+Static Data Members & Methods in C++ OOPS  #24
+
+Array of Objects & Passing Objects as Function Arguments in C++  #25
+
+Friend Functions in C++  #26
+
+Friend Classes & Member Friend Functions in C++  #27
+
+More on C++ Friend Functions (Examples & Explanation)  #28
+
+Constructors In C++  #29
+
+Parameterized and Default Constructors In C++  #30
+
+Constructor Overloading In C++  #31
+
+Constructors With Default Arguments In C++  #32
+
+Dynamic Initialization of Objects Using Constructors  #33
+
+Copy Constructor in C++  #34
+
+Destructor in C++ in Hindi  #35
+
+Inheritance & Its Different Types with Examples in C++  #36
+
+Inheritance Syntax & Visibility Mode in C++  #37
+
+Single Inheritance Deep Dive: Examples + Code  #38
+
+Protected Access Modifier in C++  #39
+
+Multilevel Inheritance Deep Dive with Code Example in C++  #40
+
+Multiple Inheritance Deep Dive with Code Example in C++  #41
+
+Exercise on C++ Inheritance  #42
+
+Ambiguity Resolution in Inheritance in C++  #43
+
+Virtual Base Class in C++  #44
+
+Code Example Demonstrating Virtual Base Class in C++  #45
+
+Constructors in Derived Class in C++  #46
+
+Solution to Exercise on Cpp Inheritance  #47
+
+Code Example: Constructors in Derived Class in Cpp  #48
+
+Initialization list in Constructors in Cpp  #49
+
+Revisiting Pointers: new and delete Keywords in CPP  #50
+
+Pointers to Objects and Arrow Operator in CPP  #51
+
+Array of Objects Using Pointers in C++  #52
+
+this Pointer in C++  #53
+
+Polymorphism in C++  #54
+
+Pointers to Derived Classes in C++  #55
+
+Virtual Functions in C++  #56
+
+Virtual Functions Example + Creation Rules in C++  #57
+
+Abstract Base Class & Pure Virtual Functions in C++  #58
+
+File I/O in C++: Working with Files  #59
+
+File I/O in C++: Reading and Writing Files  #60
+
+File I/O in C++: Read/Write in the Same Program & Closing Files  #61
+
+File I/O in C++: open() and eof() functions  #62
+
+C++ Templates: Must for Competitive Programming  #63
+
+Writing our First C++ Template in VS Code  #64
+
+C++ Templates: Templates with Multiple Parameters  #65
+
+C++ Templates: Class Templates with Default Parameters  #66
+
+C++ Function Templates & Function Templates with Parameters  #67
+
+Member Function Templates & Overloading Template Functions in C++  #68
+
+The C++ Standard Template Library (STL)  #69
+
+Containers in C++ STL  #70
+
+Vector In C++ STL  #71
+
+List In C++ STL  #72
+
+Map In C++ STL  #73
+
+Function Objects (Functors) In C++ STL  #74

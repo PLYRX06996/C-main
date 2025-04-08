@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1727404683 source:c:\users\admin\downloads\c tutorials\cw_03_05\geometric_progression.c
+	<stdio.h>
+	<math.h>
+

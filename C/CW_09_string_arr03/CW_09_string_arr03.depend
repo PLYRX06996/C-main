@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1732453769 source:c:\users\admin\onedrive\desktop\c main\cw_09_string_arr03\string_pointers.c
+	<stdio.h>
+	<string.h>
+	<math.h>
+

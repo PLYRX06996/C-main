@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1732498397 source:c:\users\admin\onedrive\desktop\c main\cw_10_struct01\struct_syntax.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+

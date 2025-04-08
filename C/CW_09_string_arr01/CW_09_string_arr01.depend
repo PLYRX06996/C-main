@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1732449052 source:c:\users\admin\onedrive\desktop\c main\cw_09_string_arr01\str_arr.c
+	<stdio.h>
+	<string.h>
+	<math.h>
+

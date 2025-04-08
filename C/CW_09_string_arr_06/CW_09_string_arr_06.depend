@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1732458739 source:c:\users\admin\onedrive\desktop\c main\cw_09_string_arr_06\built_in_func.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+

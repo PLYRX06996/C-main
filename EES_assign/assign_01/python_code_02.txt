@@ -1,0 +1,398 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from docx import Document
+import numpy as np
+from datetime import datetime
+import os
+
+# Create comprehensive dataset
+data = {
+    'Year': [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021],
+    'Total_Rainfall(mm)': [935, 880, 920, 865, 845, 830, 950, 1020, 890, 970],
+    'Evaporation_Rate(%)': [53, 56, 54, 58, 60, 62, 45, 57, 40, 55],
+    'Precipitation_Rate(%)': [28, 24, 26, 23, 22, 20, 27, 30, 23, 28],
+    'Runoff_Rate(%)': [36, 38, 37, 30, 40, 43, 35, 30, 30, 36],
+    'Temperature(C)': [29.8, 30, 29.7, 30.2, 30.5, 30.8, 28.5, 28, 29.5, 28.7],
+    'Urbanization_Rate(%)': [55, 58, 60, 62, 64, 65, 67, 69, 71, 73]
+}
+
+df = pd.DataFrame(data)
+
+def create_detailed_plots():
+    """Create detailed visualizations of all parameters"""
+    sns.set_theme(style="whitegrid")  # Use Seaborn's theme
+
+    parameters = {
+        'Total_Rainfall(mm)': 'Rainfall (mm)',
+        'Evaporation_Rate(%)': 'Evaporation (%)',
+        'Precipitation_Rate(%)': 'Precipitation (%)',
+        'Runoff_Rate(%)': 'Runoff (%)',
+        'Temperature(C)': 'Temperature (C)',
+        'Urbanization_Rate(%)': 'Urbanization (%)'
+    }
+    
+    for param, label in parameters.items():
+        plt.figure(figsize=(10, 6))
+        plt.plot(df['Year'], df[param], 'o-', linewidth=2)
+        plt.title(f'{param.replace("_", " ")}')
+        plt.xlabel('Year')
+        plt.ylabel(label)
+        plt.grid(True, linestyle='--', alpha=0.7)
+        
+        for x, y in zip(df['Year'], df[param]):
+            plt.annotate(f'{y:.1f}', 
+                         (x, y), 
+                         textcoords="offset points", 
+                         xytext=(0,10), 
+                         ha='center')
+        
+        # Save each plot as a separate image
+        plt.tight_layout()
+        plt.savefig(f'output/{param}.png', dpi=300, bbox_inches='tight')
+        plt.close()
+
+def perform_statistical_analysis():
+    """Perform comprehensive statistical analysis"""
+    stats_results = {}
+    
+    for column in df.columns:
+        if column != 'Year':
+            stats = {
+                'mean': df[column].mean(),
+                'std': df[column].std(),
+                'min': df[column].min(),
+                'max': df[column].max(),
+                'trend': df[column].iloc[-1] - df[column].iloc[0]
+            }
+            stats_results[column] = stats
+    
+    print("\nSTATISTICAL ANALYSIS")
+    print("-" * 50)
+    for param, stats in stats_results.items():
+        print(f"\n{param.replace('_', ' ')}:")
+        print(f"  Average: {stats['mean']:.2f}")
+        print(f"  Standard Deviation: {stats['std']:.2f}")
+        print(f"  Range: {stats['min']:.2f} to {stats['max']:.2f}")
+        print(f"  Overall Change: {stats['trend']:.2f}")
+    
+    return stats_results
+
+def make_advanced_predictions():
+    """Make predictions with confidence intervals"""
+    next_year = df['Year'].max() + 1
+    predictions = {}
+    
+    print("\nPREDICTIONS FOR", next_year)
+    print("-" * 50)
+    
+    for column in df.columns:
+        if column != 'Year':
+            X = df['Year'].values.reshape(-1, 1)
+            y = df[column].values
+            
+            model = LinearRegression()
+            model.fit(X, y)
+            
+            prediction = model.predict([[next_year]])[0]
+            r_squared = model.score(X, y)
+            
+            predictions[column] = {
+                'predicted_value': prediction,
+                'r_squared': r_squared
+            }
+            
+            print(f"\n{column.replace('_', ' ')}:")
+            print(f"  Predicted Value: {prediction:.2f}")
+            print(f"  Confidence (R²): {r_squared:.3f}")
+    
+    return predictions
+
+def analyze_interventions():
+    """Analyze effectiveness of government interventions"""
+    results = {}
+    print("\nANALYSIS OF GOVERNMENT INITIATIVES")
+    print("-" * 50)
+    
+    avg_rainfall = df['Total_Rainfall(mm)'].mean()
+    runoff_trend = df['Runoff_Rate(%)'].iloc[-1] - df['Runoff_Rate(%)'].iloc[0]
+    potential_savings = avg_rainfall * (runoff_trend / 100)
+    
+    results['Rainwater Harvesting Analysis'] = {
+        'Average Annual Rainfall': f"{avg_rainfall:.1f} mm",
+        'Change in Runoff Rate': f"{runoff_trend:.1f}%",
+        'Potential Water Savings': f"{potential_savings:.1f} mm per year"
+    }
+    
+    urbanization_change = df['Urbanization_Rate(%)'].iloc[-1] - df['Urbanization_Rate(%)'].iloc[0]
+    temp_change = df['Temperature(C)'].iloc[-1] - df['Temperature(C)'].iloc[0]
+    
+    results['Urbanization Impact'] = {
+        'Urbanization Rate Change': f"{urbanization_change:.1f}%",
+        'Temperature Change': f"{temp_change:.1f}°C"
+    }
+    
+    recommendations = []
+    if runoff_trend > 0:
+        recommendations.append("Implement more rainwater harvesting systems")
+    if urbanization_change > 0:
+        recommendations.append("Increase green roof coverage")
+    if temp_change > 0:
+        recommendations.append("Enhance urban forestry programs")
+    
+    results['Recommendations'] = recommendations
+    
+    return results
+
+def generate_report_txt(stats_results, predictions, interventions_results):
+    """Generate comprehensive analysis report"""
+    report_text = """
+Water Cycle Disruption Analysis Report
+Generated on: {date}
+
+1. INTRODUCTION
+---------------
+This report analyzes the water cycle disruption in urban areas, focusing on key parameters
+including rainfall, evaporation, precipitation, runoff, temperature, and urbanization rates.
+
+2. METHODOLOGY
+-------------
+Data was analyzed using Python, employing:
+- Pandas for data manipulation
+- Matplotlib for visualization
+- Scikit-learn for predictive modeling
+
+3. RESULTS
+----------
+3.1 Statistical Analysis:
+""".format(date=datetime.now().strftime("%Y-%m-%d"))
+
+    for param, stats in stats_results.items():
+        report_text += f"\n{param.replace('_', ' ')}:\n"
+        report_text += f"  • Average: {stats['mean']:.2f}\n"
+        report_text += f"  • Range: {stats['min']:.2f} to {stats['max']:.2f}\n"
+        report_text += f"  • Overall Trend: {stats['trend']:.2f}\n"
+
+    report_text += "\n3.2 Predictions for Next Year:\n"
+    for param, pred in predictions.items():
+        report_text += f"  • {param.replace('_', ' ')}: {pred['predicted_value']:.2f}\n"
+        report_text += f"    Confidence (R²): {pred['r_squared']:.3f}\n"
+
+    report_text += "\n3.3 Analysis of Government Initiatives:\n"
+    for section, results in interventions_results.items():
+        report_text += f"\n{section}:\n"
+        for key, value in results.items():
+            if isinstance(value, list):
+                report_text += f"  • {key}: " + ", ".join(value) + "\n"
+            else:
+                report_text += f"  • {key}: {value}\n"
+
+    with open('output/WaterCycleDisruptionReport.txt', 'w') as f:
+        f.write(report_text)
+
+    return report_text
+
+
+def generate_report_pdf(stats_results, predictions, interventions_results):
+    """Generate comprehensive analysis report in PDF format"""
+    report_file = 'output/WaterCycleDisruptionReport.pdf'
+    c = canvas.Canvas(report_file, pagesize=letter)
+    width, height = letter
+
+    c.drawString(100, height - 50, "Water Cycle Disruption Analysis Report")
+    c.drawString(100, height - 70, f"Generated on: {datetime.now().strftime('%Y-%m-%d')}")
+
+    y_position = height - 100
+
+    c.drawString(100, y_position, "1. INTRODUCTION")
+    y_position -= 20
+    c.drawString(100, y_position, "This report analyzes the water cycle disruption in urban areas...")
+
+    y_position -= 40
+    c.drawString(100, y_position, "2. METHODOLOGY")
+    y_position -= 20
+    c.drawString(100, y_position, "Data was analyzed using Python...")
+
+    y_position -= 40
+    c.drawString(100, y_position, "3. RESULTS")
+    y_position -= 20
+    c.drawString(100, y_position, "3.1 Statistical Analysis:")
+    y_position -= 20
+
+    for param, stats in stats_results.items():
+        c.drawString(100, y_position, f"{param.replace('_', ' ')}:")
+        y_position -= 15
+        c.drawString(120, y_position, f"• Average: {stats['mean']:.2f}")
+        y_position -= 15
+        c.drawString(120, y_position, f"• Range: {stats['min']:.2f} to {stats['max']:.2f}")
+        y_position -= 15
+        c.drawString(120, y_position, f"• Overall Trend: {stats['trend']:.2f}")
+        y_position -= 20
+
+    c.drawString(100, y_position, "3.2 Predictions for Next Year:")
+    y_position -= 20
+    for param, pred in predictions.items():
+        c.drawString(120, y_position, f"• {param.replace('_', ' ')}: {pred['predicted_value']:.2f}")
+        y_position -= 15
+        c.drawString(120, y_position, f"  Confidence (R²): {pred['r_squared']:.3f}")
+        y_position -= 20
+
+    c.drawString(100, y_position, "3.3 Analysis of Government Initiatives:")
+    y_position -= 20
+    for section, results in interventions_results.items():
+        c.drawString(100, y_position, f"{section}:")
+        y_position -= 15
+        for key, value in results.items():
+            if isinstance(value, list):
+                c.drawString(120, y_position, f"• {key}: " + ", ".join(value))
+            else:
+                c.drawString(120, y_position, f"• {key}: {value}")
+            y_position -= 15
+        y_position -= 10
+
+    c.save()
+    print(f"Report generated successfully in {report_file}!")
+
+def generate_report_docx(stats_results, predictions, interventions_results):
+    """Generate comprehensive analysis report in DOCX format"""
+    doc = Document()
+    doc.add_heading('Water Cycle Disruption Analysis Report', level=1)
+    doc.add_paragraph(f'Generated on: {datetime.now().strftime("%Y-%m-%d")}')
+
+    doc.add_heading('1. INTRODUCTION', level=2)
+    doc.add_paragraph("This report analyzes the water cycle disruption in urban areas...")
+
+    doc.add_heading('2. METHODOLOGY', level=2)
+    doc.add_paragraph("Data was analyzed using Python...")
+
+    doc.add_heading('3. RESULTS', level=2)
+
+    doc.add_heading('3.1 Statistical Analysis:', level=3)
+    for param, stats in stats_results.items():
+        doc.add_heading(param.replace('_', ' '), level=4)
+        doc.add_paragraph(f"• Average: {stats['mean']:.2f}")
+        doc.add_paragraph(f"• Range: {stats['min']:.2f} to {stats['max']:.2f}")
+        doc.add_paragraph(f"• Overall Trend: {stats['trend']:.2f}")
+
+    doc.add_heading('3.2 Predictions for Next Year:', level=3)
+    for param, pred in predictions.items():
+        doc.add_paragraph(f"• {param.replace('_', ' ')}: {pred['predicted_value']:.2f}")
+        doc.add_paragraph(f"  Confidence (R²): {pred['r_squared']:.3f}")
+
+    doc.add_heading('3.3 Analysis of Government Initiatives:', level=3)
+    for section, results in interventions_results.items():
+        doc.add_heading(section, level=4)
+        for key, value in results.items():
+            if isinstance(value, list):
+                doc.add_paragraph(f"• {key}: " + ", ".join(value))
+            else:
+                doc.add_paragraph(f"• {key}: {value}")
+
+    report_file = 'output/WaterCycleDisruptionReport.docx'
+    doc.save(report_file)
+    print(f"Report generated successfully in {report_file}!")
+
+def generate_report_html(stats_results, predictions, interventions_results):
+    """Generate comprehensive analysis report in HTML format"""
+    report_file = 'output/WaterCycleDisruptionReport.html'
+    with open(report_file, 'w') as f:
+        f.write("<html><head><title>Water Cycle Disruption Analysis Report</title></head><body>")
+        f.write("<h1>Water Cycle Disruption Analysis Report</h1>")
+        f.write(f"<p>Generated on: {datetime.now().strftime('%Y-%m-%d')}</p>")
+
+        f.write("<h2>1. INTRODUCTION</h2>")
+        f.write("<p>This report analyzes the water cycle disruption in urban areas...</p>")
+
+        f.write("<h2>2. METHODOLOGY</h2>")
+        f.write("<p>Data was analyzed using Python...</p>")
+
+        f.write("<h2>3. RESULTS</h2>")
+        f.write("<h3>3.1 Statistical Analysis:</h3>")
+        for param, stats in stats_results.items():
+            f.write(f"<h4>{param.replace('_', ' ')}</h4>")
+            f.write(f"<p>• Average: {stats['mean']:.2f}</p>")
+            f.write(f"<p>• Range: {stats['min']:.2f} to {stats['max']:.2f}</p>")
+            f.write(f"<p>• Overall Trend: {stats['trend']:.2f}</p>")
+
+        f.write("<h3>3.2 Predictions for Next Year:</h3>")
+        for param, pred in predictions.items():
+            f.write(f"<p>• {param.replace('_', ' ')}: {pred['predicted_value']:.2f}</p>")
+            f.write(f"<p>  Confidence (R²): {pred['r_squared']:.3f}</p>")
+
+        f.write("<h3>3.3 Analysis of Government Initiatives:</h3>")
+        for section, results in interventions_results.items():
+            f.write(f"<h4>{section}</h4>")
+            for key, value in results.items():
+                if isinstance(value, list):
+                    f.write(f"<p>• {key}: " + ", ".join(value) + "</p>")
+                else:
+                    f.write(f"<p>• {key}: {value}</p>")
+
+        f.write("</body></html>")
+    
+    print(f"Report generated successfully in {report_file}!")
+
+def create_interactive_analysis():
+    """Create interactive menu for analysis"""
+    while True:
+        print("\nWater Cycle Analysis Menu:")
+        print("1. View Basic Statistics")
+        print("2. Show Trends Graph")
+        print("3. View Predictions")
+        print("4. Analyze Government Initiatives")
+        print("5. Generate Complete Report (PDF)")
+        print("6. Generate Complete Report (DOCX)")
+        print("7. Generate Complete Report (HTML)")
+        print("8. Generate Complete Report (TXT)")
+        print("9. Exit")
+        
+        choice = input("\nEnter your choice (1-9): ")
+        
+        if choice == '1':
+            perform_statistical_analysis()
+        elif choice == '2':
+            create_detailed_plots()
+            print("Graphs saved in output folder")
+        elif choice == '3':
+            make_advanced_predictions()
+        elif choice == '4':
+            interventions_results = analyze_interventions()
+        elif choice == '5':
+            stats = perform_statistical_analysis()
+            preds = make_advanced_predictions()
+            interventions_results = analyze_interventions()
+            generate_report_pdf(stats, preds, interventions_results)
+        elif choice == '6':
+            stats = perform_statistical_analysis()
+            preds = make_advanced_predictions()
+            interventions_results = analyze_interventions()
+            generate_report_docx(stats, preds, interventions_results)
+        elif choice == '7':
+            stats = perform_statistical_analysis()
+            preds = make_advanced_predictions()
+            interventions_results = analyze_interventions()
+            generate_report_html(stats, preds, interventions_results)
+        elif choice == '8':
+            stats = perform_statistical_analysis()
+            preds = make_advanced_predictions()
+            interventions_results = analyze_interventions()
+            generate_report_txt(stats, preds, interventions_results)
+        elif choice == '9':
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+def main():
+    """Main function to run the analysis"""
+    print("Starting Water Cycle Disruption Analysis...")
+    
+    # Create output directory
+    if not os.path.exists('output'):
+        os.makedirs('output')
+    
+
+if __name__ == "__main__":
+    main()
