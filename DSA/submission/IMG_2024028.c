@@ -2,183 +2,113 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-#include <limits.h>
-typedef struct Node
-{
-    struct Node *next;
+
+typedef struct Node_t {
     int data;
-} Node;
-Node *createNode(int value)
-{
-    Node *newNode = (Node *)malloc(sizeof(Node));
-    newNode->data = value;
-    newNode->next = NULL;
+    struct Node_t *left;
+    struct Node_t *right;
+} Node_t;
+
+Node_t *createNode(int data) {
+    Node_t *newNode = (Node_t *)malloc(sizeof(Node_t));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
     return newNode;
 }
-Node *insertAtEnd(Node *head, int value)
-{
-    Node *temp = createNode(value);
-    if (head == NULL)
-    {
-        return temp;
+
+Node_t *insert(Node_t *root, int data) {
+    if(root == NULL) {
+        return createNode(data);
     }
-    Node *current = head;
-    while (current->next != NULL)
-    {
-        current = current->next;
+    if(data < root->data) {
+        root->left = insert(root->left, data);
+    } else if(data > root->data) {
+        root->right = insert(root->right, data);
     }
-    current->next = temp;
-    return head;
+    return root;
 }
-int returnValue(Node *head, int position)
-{
-    if (position < 1)
-    {
-        return INT_MIN;
+
+void preorder(Node_t *root) {
+    if(root == NULL) {
+        return;
     }
-    Node *current = head;
-    for (int i = 1; current != NULL && i < position; i++)
-    {
-        current = current->next;
-    }
-    if (current == NULL)
-    {
-        return INT_MIN;
-    }
-    return current->data;
+    printf("%d ", root->data);
+    preorder(root->left);
+    preorder(root->right);
 }
-Node *deleteNode(Node *head, int position)
-{
-    Node *temp = head;
-    Node *prev = NULL;
 
-    if (temp == NULL)
-        return head;
-
-    if (position == 1)
-    {
-        head = temp->next;
-        free(temp);
-        return head;
+void inorder(Node_t *root) {
+    if(root == NULL) {
+        return;
     }
-
-    for (int i = 1; temp != NULL && i < position; i++)
-    {
-        prev = temp;
-        temp = temp->next;
-    }
-
-    if (temp != NULL)
-    {
-        prev->next = temp->next;
-        free(temp);
-    }
-
-    return head;
+    inorder(root->left);
+    printf("%d ", root->data);
+    inorder(root->right);
 }
-int largestEven(Node *head)
-{
-    Node *current = head;
-    int max_even = INT_MIN;
-    int pos = -1;
-    int current_pos = 1;
 
-    while (current != NULL)
-    {
-        if (current->data % 2 == 0)
-        {
-            if (current->data > max_even)
-            {
-                max_even = current->data;
-                pos = current_pos;
-            }
+void postorder(Node_t *root) {
+    if(root == NULL) {
+        return;
+    }
+    postorder(root->left);
+    postorder(root->right);
+    printf("%d ", root->data);
+}
+
+int maxDepth(Node_t *root) {
+    if (root == NULL) {
+        return 0;
+    }
+    int leftDepth = maxDepth(root->left);
+    int rightDepth = maxDepth(root->right);
+    return (leftDepth > rightDepth) ? leftDepth + 1 : rightDepth + 1;
+}
+
+void printNodesAtDepth(Node_t *root, int currentDepth, int targetDepth) {
+    if (root == NULL) {
+        return;
+    }
+    if (currentDepth == targetDepth) {
+        if (root->left == NULL && root->right == NULL) {
+            printf("%d ", root->data);
         }
-        current = current->next;
-        current_pos++;
+        return;
     }
-
-    return pos;
+    printNodesAtDepth(root->left, currentDepth + 1, targetDepth);
+    printNodesAtDepth(root->right, currentDepth + 1, targetDepth);
 }
 
-int largestOdd(Node *head)
-{
-    Node *current = head;
-    int max_odd = INT_MIN;
-    int pos = -1;
-    int current_pos = 1;
+void printDeepestLeafNodes(Node_t *root) {
+    if (root == NULL) {
+        return;
+    }
+    int depth = maxDepth(root);
+    printNodesAtDepth(root, 1, depth);
+}
 
-    while (current != NULL)
-    {
-        if (current->data % 2 != 0)
-        {
-            if (current->data > max_odd)
-            {
-                max_odd = current->data;
-                pos = current_pos;
-            }
-        }
-        current = current->next;
-        current_pos++;
-    }
-
-    return pos;
-}
-void printList(Node *head)
-{
-    while (head != NULL)
-    {
-        printf("%d ", head->data);
-        head = head->next;
-    }
-    printf("\n");
-}
-void freeList(Node *head)
-{
-    Node *current = head;
-    while (current != NULL)
-    {
-        Node *temp = current;
-        current = current->next;
-        free(temp);
-    }
-}
-int main()
-{
-    int tc;
-    scanf("%d", &tc);
-    while (tc--)
-    {
+int main() {
+    int T;
+    scanf("%d", &T);
+    while(T--){
         int n;
         scanf("%d", &n);
-        Node *head = NULL;
-        while (n--)
-        {
-            int a;
-            scanf("%d", &a);
-            head = insertAtEnd(head, a);
+        int arr[n];
+        for(int i = 0; i < n; i++){
+            scanf("%d", &arr[i]);
         }
-        Node *newHead = NULL;
-        while (1)
-        {
-            int posEven = largestEven(head);
-            if (posEven != -1)
-            {
-                newHead = insertAtEnd(newHead, returnValue(head, posEven));
-                head = deleteNode(head, posEven);
-            }
-            int posOdd = largestOdd(head);
-            if (posOdd != -1)
-            {
-                newHead = insertAtEnd(newHead, returnValue(head, posOdd));
-                head = deleteNode(head, posOdd);
-            }
-            if (head == NULL)
-            {
-                break;
-            }
+        Node_t *root = NULL;
+        for(int j = 0; j < n; j++) {
+            root = insert(root, arr[j]);
         }
-        printList(newHead);
-        freeList(newHead);
+        preorder(root);
+        printf("\n");
+        inorder(root);
+        printf("\n");
+        postorder(root);
+        printf("\n");
+        printDeepestLeafNodes(root);
+        printf("\n");
     }
     return 0;
 }
