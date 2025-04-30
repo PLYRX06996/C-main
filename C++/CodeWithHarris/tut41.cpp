@@ -21,6 +21,7 @@ class derived : public Base1, public Base2 {
     protected:
     int derVar;
     public:
+    derived(int a, int b) : Base1(a), Base2(b) {}
     void show() {
         cout << "The base-variable-01 is: " << base1Var <<  endl;
         cout << "The base-variable-02 is: " << base2Var <<  endl;
@@ -28,8 +29,7 @@ class derived : public Base1, public Base2 {
     }
 };
 int main() {
-    derived d1;
-    
-
+    derived d1(10, 20);
+    d1.show();
     return 0;
 }
