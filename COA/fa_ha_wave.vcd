@@ -1,5 +1,5 @@
 $date
-	Mon Aug 18 11:48:50 2025
+	Mon Aug 18 11:48:58 2025
 $end
 $version
 	Icarus Verilog
@@ -7,7 +7,7 @@ $end
 $timescale
 	1ps
 $end
-$scope module FA_tb $end
+$scope module FA_HA_tb $end
 $var wire 1 ! s $end
 $var wire 1 " co $end
 $var reg 1 # a $end
@@ -18,12 +18,30 @@ $var wire 1 # a $end
 $var wire 1 $ b $end
 $var wire 1 % ci $end
 $var wire 1 " co $end
+$var wire 1 & s1 $end
 $var wire 1 ! s $end
+$var wire 1 ' c2 $end
+$var wire 1 ( c1 $end
+$scope module ha1 $end
+$var wire 1 # a $end
+$var wire 1 $ b $end
+$var wire 1 ( c $end
+$var wire 1 & s $end
+$upscope $end
+$scope module ha2 $end
+$var wire 1 & a $end
+$var wire 1 % b $end
+$var wire 1 ' c $end
+$var wire 1 ! s $end
+$upscope $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 #0
 $dumpvars
+0(
+0'
+0&
 0%
 0$
 0#
@@ -34,23 +52,30 @@ $end
 1!
 1%
 #20000
+1&
 0%
 1$
 #30000
 1"
 0!
+1'
 1%
 #40000
 0"
 1!
+0'
 0%
 0$
 1#
 #50000
 1"
 0!
+1'
 1%
 #60000
+0'
+0&
+1(
 0%
 1$
 #70000

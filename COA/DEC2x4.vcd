@@ -1,0 +1,48 @@
+$date
+	Mon Aug 18 13:17:18 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module DEC2x4_tb $end
+$var wire 4 ! Y [3:0] $end
+$var reg 2 " A [1:0] $end
+$var reg 1 # Enable $end
+$scope module uut $end
+$var wire 2 $ A [1:0] $end
+$var wire 1 # Enable $end
+$var wire 4 % Y [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 %
+b0 $
+0#
+b0 "
+b0 !
+$end
+#10000
+b1 !
+b1 %
+1#
+#20000
+b10 !
+b10 %
+b1 "
+b1 $
+#30000
+b100 !
+b100 %
+b10 "
+b10 $
+#40000
+b1000 !
+b1000 %
+b11 "
+b11 $
+#50000
