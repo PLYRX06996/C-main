@@ -1088,7 +1088,7 @@ void quicksort(int X[], int l, int h)
 
 int partition(int X[], int l, int h)
 {
-    int n=h-l+1;
+    //int n=h-l+1;
     int pivot=X[h];
     int p=l-1;
     for(int i=l;i<=h;i++)
@@ -1106,7 +1106,7 @@ int partition(int X[], int l, int h)
 
 void quicksort(int X[],int l, int h)
 {
-    int n=h-l+1;
+    //int n=h-l+1;
     if(l>=h) return;
     int p=partition(X,l,h);
     quicksort(X,l,p-1);

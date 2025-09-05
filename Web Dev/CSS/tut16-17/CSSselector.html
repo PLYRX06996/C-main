@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*CSS selector*/
+        /* Universal selector  */
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .div1{
+            background-color: aqua;
+        }
+        .div2{
+            background-color: aquamarine;
+        }
+
+        /* child selector ke liye vo direct child hona chanhiye */
+        .div2 > p{
+            color: red;
+            background-color: yellow;
+        }
+        #address{
+            color: blue;
+            background-color: azure;
+        }
+        /* Pseudo Selector  */
+        a:visited{
+            color:tomato;
+        }
+        a:link{
+            color: green;
+        }
+        a:active{
+            background-color: yellow;
+        }
+        a:hover{
+            background-color: blueviolet;
+        }
+        p:first-child{
+            background-color: blueviolet;
+        }
+        p:last-child{
+            background-color: yellowgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="div1">
+        Abdul Qadir
+    </div>
+
+    <div class="div2">
+        Gulam Mohiyuddin Memon
+        <p>
+            He is my father.
+        </p>
+        <p id="address">
+            1/234, gandhi road, new delhi.
+        </p>
+    </div>
+    <a href="https://www.fast.com/">Check Your Internet Speed</a>
+    <a href="https://archwiki.com/">Arch Wiki</a>
+    <div class="one">
+        <p>I am one</p>
+        <p>I am two</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+$date
+	Mon Sep 01 11:37:20 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module FourBitAdder_tb $end
+$var wire 4 ! Sum [3:0] $end
+$var wire 1 " Cout $end
+$var reg 4 # A [3:0] $end
+$var reg 4 $ B [3:0] $end
+$var reg 1 % Cin $end
+$scope module UUT $end
+$var wire 4 & A [3:0] $end
+$var wire 4 ' B [3:0] $end
+$var wire 1 % Cin $end
+$var wire 4 ( Sum [3:0] $end
+$var wire 1 " Cout $end
+$var wire 1 ) C2 $end
+$var wire 1 * C1 $end
+$var wire 1 + C0 $end
+$scope module FA0 $end
+$var wire 1 , A $end
+$var wire 1 - B $end
+$var wire 1 % Cin $end
+$var wire 1 . Sum $end
+$var wire 1 + Cout $end
+$upscope $end
+$scope module FA1 $end
+$var wire 1 / A $end
+$var wire 1 0 B $end
+$var wire 1 + Cin $end
+$var wire 1 1 Sum $end
+$var wire 1 * Cout $end
+$upscope $end
+$scope module FA2 $end
+$var wire 1 2 A $end
+$var wire 1 3 B $end
+$var wire 1 * Cin $end
+$var wire 1 4 Sum $end
+$var wire 1 ) Cout $end
+$upscope $end
+$scope module FA3 $end
+$var wire 1 5 A $end
+$var wire 1 6 B $end
+$var wire 1 ) Cin $end
+$var wire 1 7 Sum $end
+$var wire 1 " Cout $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+17
+06
+05
+04
+03
+12
+01
+10
+0/
+0.
+1-
+1,
+1+
+1*
+1)
+b1000 (
+b11 '
+b101 &
+0%
+b11 $
+b101 #
+0"
+b1000 !
+$end
+#10000
+b1001 !
+b1001 (
+1.
+1%
+#20000
+07
+1"
+b0 !
+b0 (
+0.
+00
+1/
+15
+0%
+b1 $
+b1 '
+b1111 #
+b1111 &
+#30000
+17
+0"
+14
+0)
+11
+0*
+b1111 !
+b1111 (
+1.
+0+
+13
+0,
+02
+b101 $
+b101 '
+b1010 #
+b1010 &
+#40000
