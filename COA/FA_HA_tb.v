@@ -19,14 +19,19 @@ module FA_HA_tb;
         $monitor("t=%0t a=%b b=%b ci=%b -> s=%b co=%b",
                  $time, a, b, ci, s, co);
 
-        a=0; b=0; ci=0; #10;
-        a=0; b=0; ci=1; #10;
-        a=0; b=1; ci=0; #10;
-        a=0; b=1; ci=1; #10;
-        a=1; b=0; ci=0; #10;
-        a=1; b=0; ci=1; #10;
-        a=1; b=1; ci=0; #10;
-        a=1; b=1; ci=1; #10;
+        // a=0; b=0; ci=0; #10;
+        // a=0; b=0; ci=1; #10;
+        // a=0; b=1; ci=0; #10;
+        // a=0; b=1; ci=1; #10;
+        // a=1; b=0; ci=0; #10;
+        // a=1; b=0; ci=1; #10;
+        // a=1; b=1; ci=0; #10;
+        // a=1; b=1; ci=1; #10;
+        for(integer i = 1; i < 8; i++)
+        begin
+            {a, b, ci} = i;
+            #10;
+            end
 
         $finish;
     end

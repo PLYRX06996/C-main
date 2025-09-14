@@ -3,7 +3,7 @@
 module HA_tb;
     reg a, b;           // inputs to HA
     wire s, c;          // outputs from HA
-
+    integer i;
     // Instantiate the HA module
     HA uut (
         .a(a),
@@ -17,13 +17,10 @@ module HA_tb;
     $dumpvars(0, HA_tb);  // Dump all signals in the testbench
     $monitor("t=%0t a=%b b=%b -> s=%b c=%b", $time, a, b, s, c);
 
-    a = 0; b = 0; #10;
-
-    a = 0; b = 1; #10;
-
-    a = 1; b = 0; #10;
-
-    a = 1; b = 1; #10;
+    for (i = 0; i < 4; i++) begin
+            {a, b} = i;
+            #10;
+        end
 
     $finish;
 end

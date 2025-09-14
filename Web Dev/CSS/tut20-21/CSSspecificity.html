@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Specificity & Cascade</title>
+    <style>
+        h1{
+            color: aqua;
+        }
+        .cpurple{
+            color: purple;
+        }
+        h1.cyellow{
+            color: yellow;
+        }
+        .cred{
+            color: red;/*only this can override inline styling*/
+        }
+        [data-x="a"]{/*attribute selector*/
+            color: khaki;
+            background-color: bisque;
+        }
+        /*specificity of this selector is: 1 + 10 + 10 + 10 + 10 = 41*/
+        a.harryClass.rohan-class[href]:hover {
+            color: blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="cyellow cred cpurple" data-x="a">CSS Specificity</h1>
+    <p>Cascade Algorithm determines the winning property.
+        <ol>
+            <li>Position and order of appearance: the order in which your CSS rules appear</li>
+            <b>Inline>ID>Class>Element Slelector>Univeral Selector</b>
+            <li>Specificity: an algorithm that determines which CSS selector has the strongest match</li>
+            <li>Origin: the order in which CSS appears and where it comes from, whether that is a browser style, CSS from a browser extension, or your authored CSS</li>
+            <li>Importance: some CSS rules are weighted more heavily than others, especially with the !important rule type</li>
+            <!-- !important-->
+        </ol>
+    </p>
+    <p>Specificity Calculation
+    To calculate specificity, assign a value to each part of the selector:
+
+    <ul>
+    <li>Universal Selector: 0</li>
+    <li>Element selectors and pseudo-elements: 1</li>
+    <li>Class selectors, attribute selectors, and pseudo-classes: 10</li>
+    <li>ID selectors: 100</li>
+    <li>Inline styles: 1000</li>
+    </ul>
+    </p>
+</body>
+</html>
