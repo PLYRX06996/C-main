@@ -1,0 +1,89 @@
+$date
+	Mon Oct 06 00:21:40 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module memory_cell_tb $end
+$var wire 1 ! Q $end
+$var wire 1 " Out $end
+$var reg 1 # Clk $end
+$var reg 1 $ D $end
+$var reg 1 % Read $end
+$var reg 1 & Write $end
+$scope module uut $end
+$var wire 1 # Clk $end
+$var wire 1 $ D $end
+$var wire 1 % Read $end
+$var wire 1 ' Rst $end
+$var wire 1 & Write $end
+$var wire 1 " Out $end
+$var reg 1 ! Q $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+z'
+0&
+0%
+0$
+0#
+z"
+x!
+$end
+#5000
+1#
+#10000
+0#
+1&
+1$
+#15000
+1!
+1#
+#20000
+0#
+0&
+#25000
+1#
+#30000
+1"
+0#
+1%
+#35000
+1#
+#40000
+z"
+0#
+0%
+#45000
+1#
+#50000
+0#
+1&
+0$
+#55000
+0!
+1#
+#60000
+0#
+0&
+#65000
+1#
+#70000
+0"
+0#
+1%
+#75000
+1#
+#80000
+z"
+0#
+0%
+#85000
+1#
+#90000
+0#

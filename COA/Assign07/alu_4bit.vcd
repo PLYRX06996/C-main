@@ -1,0 +1,77 @@
+$date
+	Mon Oct 13 10:45:02 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module alu_4bit_tb $end
+$var wire 4 ! F [3:0] $end
+$var wire 1 " Cout $end
+$var reg 4 # A [3:0] $end
+$var reg 4 $ B [3:0] $end
+$var reg 1 % Cin $end
+$var reg 2 & S [1:0] $end
+$scope module uut $end
+$var wire 4 ' A [3:0] $end
+$var wire 4 ( B [3:0] $end
+$var wire 1 % Cin $end
+$var wire 2 ) S [1:0] $end
+$var reg 1 " Cout $end
+$var reg 4 * F [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 *
+b11 )
+b0 (
+b0 '
+b11 &
+0%
+b0 $
+b0 #
+0"
+b0 !
+$end
+#10000
+b1111 !
+b1111 *
+b101 $
+b101 (
+b1010 #
+b1010 '
+#20000
+1"
+b1001 !
+b1001 *
+b1010 $
+b1010 (
+b1111 #
+b1111 '
+#30000
+b1011 !
+b1011 *
+b1111 $
+b1111 (
+b1100 #
+b1100 '
+#40000
+0"
+b1111 !
+b1111 *
+b1001 $
+b1001 (
+b110 #
+b110 '
+#50000
+1"
+1%
+b1111 $
+b1111 (
+b1111 #
+b1111 '
+#60000

@@ -19,9 +19,9 @@ module dec4x16 (
     dec2x4 dec1(.A(A[1:0]), .Y(y1));
     dec2x4 dec0(.A(A[1:0]), .Y(y0));
 
-    assign Y[15:12] = decideDEC[3] ? y3 : 4'b0000;
-    assign Y[11:8] = decideDEC[2] ? y2 : 4'b0000;
-    assign Y[7:4] = decideDEC[1] ? y1 : 4'b0000;
-    assign Y[3:0] = decideDEC[0] ? y3 : 4'b0000;
+    assign Y[15:12] = deciding[3] ? y3 : 4'b0000;
+    assign Y[11:8] = deciding[2] ? y2 : 4'b0000;
+    assign Y[7:4] = deciding[1] ? y1 : 4'b0000;
+    assign Y[3:0] = deciding[0] ? y3 : 4'b0000;
     
 endmodule

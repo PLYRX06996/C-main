@@ -1,0 +1,334 @@
+Environmental Science: Unit I - Environment and Ecosystem
+Introduction to Environmental Science
+Environmental science is the study of:
+
+How the Nature works
+How the environment affects the humans and vice versa
+
+"(Environmental science is) an interdisciplinary field that integrates areas of life, physical and earth science to study and address problems facing the environment and to implement science-based solutions."
+The science of Environment studies is multi-disciplinary. It comprises various branches of studies like chemistry, physics, medical science, life science, agriculture, public health, sanitary engineering and many more.
+Mathematics is indeed necessary for Environmental science. In some classes, basic statistics or algebra is required, while some coursework may require advanced algebra, trigonometry, and calculus.
+ES Course Content
+The Environmental Science course includes:
+
+Mathematics Foundation (Linear Algebra, Calculus, Differential Equations, Probability and Statistics)
+Environmental Chemistry (Fundamentals, Water Chemistry, Soil Chemistry, Atmospheric Chemistry)
+Environmental Microbiology
+Water Resources (Global, Surface, and Groundwater)
+Water & Wastewater Treatment and Management
+Air and Noise Pollution
+Solid and Hazardous Waste Management
+Global and Regional Environmental Issues
+Environmental Management and Sustainable Development
+
+Definitions of Environment Science
+The word 'Environment' is derived from the French word 'Environner' which means to encircle, around or surround. The biologist Jacob Van Uerkal (1864-1944) introduced the term 'environment' in Ecology.
+Ecology is the study of the interactions between an organism and its environment. Environmental Science is an interdisciplinary field requiring the study of interactions among physical, chemical and biological components of the Environment with a focus on pollution and degradation.
+Environmental Science deals with the study of processes in soil, water, air and organisms which lead to pollution or environmental damages and the scientific basis for establishing standards considered acceptably clean, safe, and healthy for humans and ecosystems.
+What is Environment?
+Environment refers to the surrounding external conditions influencing development or growth of people, animals, or plants. This involves three questions:
+
+What is surrounded? (Living objects, particularly humans)
+By what surrounded? (Human life cannot exist in isolation from animal and plant life)
+Where surrounded? (In nature - land, air, water)
+
+Environment belongs to all living beings and is thus important for all. It refers to the sum total of conditions surrounding us in space and time. In modern times, it includes social, economic, and political conditions beyond just physical aspects.
+Environment is the sum total of land, water, air, interrelationships among themselves and also with the human beings and other living organisms.
+Role of IT in Solving Environmental Issues
+
+Data Analytics for Environmental Monitoring:
+
+Use data analytics to monitor environmental parameters
+Implement machine learning to predict environmental changes
+
+
+IoT for Environmental Sensing:
+
+Deploy IoT devices for real-time monitoring
+Use sensor networks to collect data on pollution levels
+
+
+Green IT Practices:
+
+Implement energy-efficient computing solutions
+Optimize hardware and software to minimize energy consumption
+
+
+Remote Collaboration:
+
+Implement remote work to reduce commuting
+Develop virtual collaboration tools to reduce travel impact
+
+
+E-waste Management:
+
+Develop strategies for responsible recycling
+Implement refurbishment practices
+
+
+Renewable Energy Integration:
+
+Implement IT solutions for renewable energy integration
+Develop energy management systems
+
+
+Supply Chain Sustainability:
+
+Monitor environmental impact throughout supply chains
+Implement blockchain for transparent supply chains
+
+
+Environmental Education:
+
+Develop educational platforms about environmental issues
+Provide tools for informed decision-making
+
+
+Smart Cities:
+
+Implement solutions for energy usage, traffic, waste management
+Utilize IT for data-driven urban planning
+
+
+Collaboration with Environmental Organizations:
+
+Provide technical support to environmental initiatives
+Implement IT systems for environmental monitoring
+
+
+Carbon Footprint Tracking:
+
+Develop tools for tracking carbon footprints
+Implement strategies to reduce carbon emissions
+
+
+
+Segments of Environment
+The environment consists of four segments:
+
+Atmosphere (Air)
+Hydrosphere (Water)
+Lithosphere (Land)
+Biosphere (Living organisms)
+
+Earth's Formation and Evolution
+Earth formed approximately 4.57 billion years ago through processes explained by the Big Bang Theory:
+
+Earth formed from a nebula of gas and dust
+The nebula collapsed, spinning into a disk shape
+This material condensed into planets, moons, and asteroids
+
+Earth's atmosphere evolved from:
+
+Secondary atmosphere rich in water vapor, CO2, and nitrogen
+Water vapor condensed into liquid water, forming oceans and rivers
+
+Earth's crust evolved as the planet cooled, forming a stable surface with different interior zones containing various materials.
+Life on Earth evolved beginning in the Archean eon (4.0-2.5 billion years ago), with dinosaurs evolving during the Mesozoic era (252-65.5 million years ago).
+Early Earth Development
+During its first half billion years, Earth's surface was repeatedly bombarded by asteroids and comets. One of these collisions formed the Moon approximately 50 million years after Earth's creation (Giant Impact Hypothesis).
+The early Earth heated up due to:
+
+Collisions (transfer of kinetic energy into heat)
+Compression
+Radioactivity of elements (uranium, potassium, thorium)
+
+About 100 million years after initial accretion, iron began melting and sinking to form Earth's core. This global chemical differentiation was completed around 4.3 billion years ago, resulting in Earth's layered structure.
+Chemical Composition of Earth
+The whole Earth consists of: Fe+O+Si+Mg = 93%
+The crust consists of: Si+O+Al = 82%
+Earth's layers include:
+
+Lithosphere: strong, rocky outer shell including crust and upper mantle (~100 km)
+Asthenosphere: weak, ductile layer beneath lithosphere
+Deep Mantle: below asthenosphere (400-2900 km depth)
+Outer core: liquid shell of mostly iron
+Inner core: solid innermost sphere primarily of iron
+
+Continents formed from solidified magma that floated up from the mantle. Oceans and atmosphere were created through out-gassing from volcanic eruptions.
+The Evolving Atmosphere
+Earth's initial atmosphere was thin and composed mainly of helium and hydrogen, which escaped into space. Volcanic out-gassing created a thicker atmosphere with various gases:
+
+Water vapor (H2O)
+Sulfur dioxide (SO2)
+Hydrogen sulfide (H2S)
+Carbon dioxide (CO2)
+Carbon Monoxide (CO)
+Ammonia (NH3)
+Methane (CH4)
+
+Oxygen was not created by volcanic eruptions. Water on Earth came from volcanic eruptions and possibly comet impacts, with the earliest evidence of surface water dating back about 3.8 billion years.
+By 3.5 billion years ago (when Earth was a billion years old):
+
+Earth had a thick atmosphere of CO2, methane, and water vapor
+Extensive oceans and seas existed
+Life had begun to emerge
+The atmosphere contained almost no oxygen (compared to today's 21%)
+
+By 2.5 billion years ago, continents had formed with a lighter density (2.8 g/cm³) than ocean floor crust (3.2 g/cm³).
+Planet Earth Structure
+
+Geosphere (Lithosphere): Crust (<1% of Earth), Mantle, Cores
+Hydrosphere (oceans): Includes Mariana Trench (~0.2% of Earth's radius)
+Atmosphere: Extends to 120 km (99% of air within 30 km)
+Biosphere: Zone where life exists
+Magnetosphere: Shields Earth from harmful radiation
+
+Detailed Examination of Earth's Segments
+Atmosphere
+
+Forms a protective layer about 100 km thick
+Protects Earth from the Sun's harmful UV rays
+Regulates temperature
+Composed of nitrogen, oxygen, argon, carbon dioxide, and trace gases
+Absorbs cosmic rays and electromagnetic radiation
+
+Issues to address in the atmosphere include:
+
+Pollution and acid rain
+Ozone depletion
+Composition (78% nitrogen, 21% oxygen)
+Aerosols, air quality, atmospheric chemistry, pressure, radiation, temperature, water vapor, winds, clouds, precipitation, and weather events
+
+Hydrosphere
+
+Comprises all water resources (oceans, seas, lakes, rivers, etc.)
+Oceans represent 97% of Earth's water
+Polar ice caps and glaciers hold about 2%
+Only 1% is available as fresh water
+
+Issues to address in the hydrosphere include:
+
+Petroleum discharge
+Improper sewage disposal
+Thermal pollution
+Eutrophication
+Acid rain
+Greenhouse gas buildup
+
+Lithosphere
+
+The solid component of Earth (soil, rocks, mountains)
+Contains three layers:
+
+Core (inner and outer): Central fluid/vaporized sphere ~2500 km from center
+Mantle: 2900-3000 km thick layer above core (molten state)
+Crust: Outermost solid zone 8-40 km thick
+
+
+
+Biosphere
+
+The realm of living organisms and their interactions with the environment
+Encompasses the atmosphere, lithosphere, and hydrosphere supporting life systems
+
+Biogeochemical Cycles
+Natural processes where elements cycle in various forms between different environmental compartments:
+
+Water Cycle
+Carbon Cycle
+Nitrogen Cycle
+Oxygen Cycle
+Phosphorus Cycle
+Sulfur Cycle
+
+The Water Cycle
+Life on Earth depends on water. The water cycle involves:
+
+Evaporation: Change of liquid to water vapor
+Condensation: Change of water vapor to liquid
+Precipitation: Atmospheric water falling to Earth (rain, snow, sleet, hail)
+Transpiration: Evaporation of water from plants
+
+Carbon Cycle
+Carbon enters the living world as CO2 through photosynthesis, creating carbohydrates. These organic compounds pass from producers to consumers and return to the atmosphere through:
+
+Respiration
+Decomposition
+Burning of fossil fuels
+
+The carbon cycle involves:
+
+Atmosphere (CO2)
+Photosynthesis by autotrophs
+Energy usage by organisms releasing CO2
+Living organisms containing carbon
+Soil receiving carbon from dead organisms
+Fossil fuels storing carbon over millions of years
+Pollution from combustion releasing carbon
+
+Nitrogen Cycle
+Nitrogen (N2) makes up about 78% of our atmosphere but needs conversion to be usable. The cycle includes:
+
+Nitrogen Fixation: Conversion of N2 → NH3 through:
+
+Natural processes (lightning, volcanic action)
+Industrial processes (fertilizer production)
+Bacteria (Azotobactor, Clostridium, Nostoc)
+
+
+Nitrification: Conversion of NH3 → NO3 by soil bacteria
+Assimilation: Roots absorb nitrogen compounds for nucleic acids and proteins
+Ammonification: Breakdown of organic compounds into NH3 or NH4
+Denitrification: Reduction of NO3 to N2 by bacteria
+
+Oxygen Cycle
+
+Moves through atmosphere, lithosphere, and biosphere
+Oxygen makes up 21% of atmosphere
+Released by plants during photosynthesis
+Inhaled by animals who exhale CO2
+Plants use CO2 for photosynthesis, continuing the cycle
+
+Phosphorus Cycle
+
+Moves through hydrosphere, lithosphere, and biosphere
+Phosphorus is extracted by rock weathering
+Erosion carries phosphorus to soil and water bodies
+Plants and animals obtain phosphorus for growth
+Decomposition returns phosphorus to soil and water
+
+Sulfur Cycle
+
+Moves through rocks, water bodies, and living systems
+Released by rock weathering and converted to sulfates
+Microorganisms and plants convert sulfates to organic forms
+Animals consume organic sulfur through food
+Decomposition returns sulfur to soil
+
+Summary of Unit I: Environment and Ecosystem
+
+Introduction to Environmental Science:
+
+Interdisciplinary subject exploring human-environment interactions
+Involves various scientific disciplines
+Helps understand natural systems and human impacts
+
+
+The Big Bang Theory and Evolution of Earth:
+
+Explains the origin of the universe and Earth
+Explored through video lectures and discussions
+
+
+Layers of the Atmosphere:
+
+Five main layers with distinct characteristics
+Each layer plays crucial roles in climate and weather
+
+
+Segments of the Environment and Related Issues:
+
+Atmosphere: Protects life, regulates temperature; issues include pollution
+Hydrosphere: All water bodies; issues include pollution, eutrophication
+Lithosphere: Solid Earth; issues include erosion, degradation
+Biosphere: Life zone; issues include biodiversity loss, habitat destruction
+
+
+Geochemical Cycles in the Ecosystem:
+
+Water Cycle: Movement through evaporation, condensation, precipitation
+Carbon Cycle: Circulation between atmosphere, organisms, oceans
+Nitrogen Cycle: Conversion of atmospheric nitrogen to usable forms
+Sulfur Cycle: Movement through rocks, water, air
+Phosphorus Cycle: Weathering releases phosphorus into ecosystems

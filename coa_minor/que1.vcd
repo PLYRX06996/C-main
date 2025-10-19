@@ -1,0 +1,89 @@
+$date
+	Mon Sep 15 12:02:24 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module que1_tb $end
+$var wire 4 ! X [4:1] $end
+$var reg 4 " B [4:1] $end
+$scope module uut $end
+$var wire 4 # B [4:1] $end
+$var wire 7 $ w [7:1] $end
+$var wire 4 % X [4:1] $end
+$upscope $end
+$scope begin $ivl_for_loop0 $end
+$var integer 32 & i [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 &
+b11 %
+b10 $
+b0 #
+b0 "
+b11 !
+$end
+#10000
+b0 $
+b0 !
+b0 %
+b1 "
+b1 #
+b1 &
+#20000
+b100 $
+b101 !
+b101 %
+b10 "
+b10 #
+b10 &
+#30000
+b101 $
+b110 !
+b110 %
+b11 "
+b11 #
+b11 &
+#40000
+b10010 $
+b111 !
+b111 %
+b100 "
+b100 #
+b100 &
+#50000
+b101000 $
+b1100 !
+b1100 %
+b101 "
+b101 #
+b101 &
+#60000
+b1000000 $
+b1001 !
+b1001 %
+b110 "
+b110 #
+b110 &
+#70000
+b1101001 $
+b1110 !
+b1110 %
+b111 "
+b111 #
+b111 &
+#80000
+b10 $
+b1011 !
+b1011 %
+b1000 "
+b1000 #
+b1000 &
+#90000
+b1001 &

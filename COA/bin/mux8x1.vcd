@@ -1,0 +1,83 @@
+$date
+	Mon Sep 15 09:02:51 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module mux8x1_tb $end
+$var wire 1 ! Y $end
+$var reg 8 " I [7:0] $end
+$var reg 1 # enable $end
+$var reg 1 $ s0 $end
+$var reg 1 % s1 $end
+$var reg 1 & s2 $end
+$scope module uut $end
+$var wire 8 ' I [7:0] $end
+$var wire 1 ! Y $end
+$var wire 1 # enable $end
+$var wire 1 $ s0 $end
+$var wire 1 % s1 $end
+$var wire 1 & s2 $end
+$var wire 8 ( w [7:0] $end
+$upscope $end
+$scope begin $ivl_for_loop0 $end
+$var integer 32 ) i [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 )
+b0 (
+b1010110 '
+0&
+0%
+0$
+1#
+b1010110 "
+0!
+$end
+#10000
+1!
+b10 (
+1$
+b1 )
+#20000
+1!
+b100 (
+1%
+0$
+b10 )
+#30000
+0!
+b0 (
+1$
+b11 )
+#40000
+1!
+b10000 (
+1&
+0%
+0$
+b100 )
+#50000
+0!
+b0 (
+1$
+b101 )
+#60000
+1!
+b1000000 (
+1%
+0$
+b110 )
+#70000
+0!
+b0 (
+1$
+b111 )
+#80000
+b1000 )

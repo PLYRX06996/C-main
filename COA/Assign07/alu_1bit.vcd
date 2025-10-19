@@ -1,0 +1,67 @@
+$date
+	Tue Oct 14 23:55:41 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module alu_1bit_tb $end
+$var wire 1 ! F $end
+$var wire 1 " Cout $end
+$var reg 1 # A $end
+$var reg 1 $ B $end
+$var reg 1 % Cin $end
+$var reg 2 & S [1:0] $end
+$scope module uut $end
+$var wire 1 # A $end
+$var wire 1 $ B $end
+$var wire 1 % Cin $end
+$var wire 2 ' S [1:0] $end
+$var wire 1 ( and_out $end
+$var wire 1 ) or_out $end
+$var wire 1 * xor_out $end
+$var wire 1 + sum $end
+$var wire 1 " Cout $end
+$var reg 1 ! F $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+0+
+0*
+0)
+0(
+b11 '
+b11 &
+0%
+0$
+0#
+0"
+0!
+$end
+#10000
+1!
+1)
+1*
+1+
+1$
+#20000
+0!
+0+
+1"
+1%
+0$
+1#
+#30000
+1(
+0*
+0%
+1$
+#40000
+1!
+1+
+1%
+#50000

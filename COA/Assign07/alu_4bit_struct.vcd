@@ -1,0 +1,254 @@
+$date
+	Wed Oct 15 00:20:54 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module alu_4bit_struct_tb $end
+$var wire 4 ! F [3:0] $end
+$var wire 1 " Cout $end
+$var reg 4 # A [3:0] $end
+$var reg 4 $ B [3:0] $end
+$var reg 1 % Cin $end
+$var reg 2 & S [1:0] $end
+$scope module uut $end
+$var wire 4 ' A [3:0] $end
+$var wire 4 ( B [3:0] $end
+$var wire 1 % Cin $end
+$var wire 2 ) S [1:0] $end
+$var wire 3 * carry [2:0] $end
+$var wire 4 + F [3:0] $end
+$var wire 1 " Cout $end
+$scope module alu0 $end
+$var wire 1 , A $end
+$var wire 1 - B $end
+$var wire 1 % Cin $end
+$var wire 2 . S [1:0] $end
+$var wire 1 / and_out $end
+$var wire 1 0 or_out $end
+$var wire 1 1 xor_out $end
+$var wire 1 2 sum $end
+$var wire 1 3 Cout $end
+$var reg 1 4 F $end
+$upscope $end
+$scope module alu1 $end
+$var wire 1 5 A $end
+$var wire 1 6 B $end
+$var wire 1 7 Cin $end
+$var wire 2 8 S [1:0] $end
+$var wire 1 9 and_out $end
+$var wire 1 : or_out $end
+$var wire 1 ; xor_out $end
+$var wire 1 < sum $end
+$var wire 1 = Cout $end
+$var reg 1 > F $end
+$upscope $end
+$scope module alu2 $end
+$var wire 1 ? A $end
+$var wire 1 @ B $end
+$var wire 1 A Cin $end
+$var wire 2 B S [1:0] $end
+$var wire 1 C and_out $end
+$var wire 1 D or_out $end
+$var wire 1 E xor_out $end
+$var wire 1 F sum $end
+$var wire 1 G Cout $end
+$var reg 1 H F $end
+$upscope $end
+$scope module alu3 $end
+$var wire 1 I A $end
+$var wire 1 J B $end
+$var wire 1 K Cin $end
+$var wire 2 L S [1:0] $end
+$var wire 1 M and_out $end
+$var wire 1 N or_out $end
+$var wire 1 O xor_out $end
+$var wire 1 P sum $end
+$var wire 1 " Cout $end
+$var reg 1 Q F $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+0Q
+0P
+0O
+0N
+0M
+b11 L
+0K
+0J
+0I
+1H
+0G
+1F
+0E
+0D
+0C
+b11 B
+1A
+0@
+0?
+0>
+1=
+0<
+1;
+1:
+09
+b11 8
+17
+16
+05
+04
+13
+02
+01
+10
+1/
+b11 .
+1-
+1,
+b100 +
+b11 *
+b11 )
+b11 (
+b1 '
+b11 &
+0%
+b11 $
+b1 #
+0"
+b100 !
+$end
+#10000
+1>
+0A
+1<
+0=
+0"
+14
+07
+1Q
+b1111 !
+b1111 +
+1H
+0K
+0/
+11
+12
+03
+1N
+1O
+1P
+1D
+1E
+1F
+b0 *
+0G
+0-
+1J
+1?
+b1010 $
+b1010 (
+b101 #
+b101 '
+#20000
+0Q
+0P
+1"
+0H
+1K
+0F
+1G
+0>
+1A
+0<
+1=
+b0 !
+b0 +
+04
+17
+1/
+01
+02
+b111 *
+13
+1-
+06
+0J
+15
+1I
+b1 $
+b1 (
+b1111 #
+b1111 '
+#30000
+1Q
+1P
+0"
+1H
+0K
+1F
+0G
+1>
+0A
+1<
+0=
+b1111 !
+b1111 +
+14
+07
+0/
+11
+12
+b0 *
+03
+16
+1@
+0,
+05
+0?
+b111 $
+b111 (
+b1000 #
+b1000 '
+#40000
+1Q
+1>
+1A
+b1111 !
+b1111 +
+1H
+1K
+17
+1M
+0O
+1P
+1"
+1/
+01
+19
+0;
+1<
+1=
+1C
+0E
+1F
+1G
+b111 *
+13
+1J
+1,
+15
+1?
+1%
+b1111 $
+b1111 (
+b1111 #
+b1111 '
+#50000
