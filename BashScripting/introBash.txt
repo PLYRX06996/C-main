@@ -1,0 +1,33 @@
+terminal works as REPL = read -> eval -> print -> loop
+terminal it self is a program. bash is also a program
+shell is what is waiting for the input commands
+
+pwd-> print working directory
+touch -->to create a new file
+rm --> to remove a file
+cd --> change directory
+
+how to rename from the terminal??
+we will just move the old content form old-name to new-name
+!! you have to make sure there is no existing filename called new-name or it will over write the file w/o an error message.
+there is interactive command "rm -i" or "mv -i" that wil ask you do you really want to remove the file name called... whateverr you have given input
+
+to make anyfile hidden. we have to put '.' in fornt of it
+now in order to see all the files including hidden through l/ls/lsd command is to use -a after 
+
+now in every directory there are two default locations:
+./ --> which indicates current working directory.
+viz by doing "cd .", we will be in the same directory.
+
+- another location is ../ --> which indicates a directory above or higher or the directory in which current directory resides in.
+viz. by doing "cd .." we will be moved to the direcotory above
+
+**grep>
+it is used to find patterns in a specific file.
+ex. grep '^Ab' <path-to-file> --> ^ indicated start of the line
+ex. grep 'ly$'c<path-to-file> --> $ indicates end of the line
+
+** printing or overwriting the content of a file with the output of a command:
+command > filename
+-now if you use >> it will append the data into the file.
+command >> filename

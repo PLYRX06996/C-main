@@ -1,0 +1,9 @@
+
+
+**grep>
+it is used to find patterns in a specific file.
+ex. grep '^Ab' <path-to-file> --> ^ indicated start of the line
+ex. grep 'ly$'c<path-to-file> --> $ indicates end of the line
+
+** printing or overwriting the content of a file with the output of a command:
+command > filename
