@@ -27,7 +27,7 @@ def clean_data(df):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    train_dir = os.path.join(script_dir, '..', 'datasets', 'train')
+    train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
 
     df_full = load_and_merge_data(
         os.path.join(train_dir, 'ETH.csv'),
@@ -36,7 +36,6 @@ def main():
     )
     df_full = create_features(df_full)
 
-    # Let's add cumulative volume (depth) features as a last card!
     def cumulative_depth(df, prefix):
         df[f'cum_bid_vol_{prefix}'] = df[[f'bid_volume{i}{prefix}' for i in range(1,6)]].sum(axis=1)
         df[f'cum_ask_vol_{prefix}'] = df[[f'ask_volume{i}{prefix}' for i in range(1,6)]].sum(axis=1)
@@ -52,7 +51,7 @@ def main():
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, shuffle=False)
 
     print("Step 1: Rapid feature importance extraction...")
-    # Train a single fast model to get importance
+
     fast_model = xgb.XGBRegressor(n_estimators=100, max_depth=5, tree_method='hist', device='cuda', random_state=42)
     fast_model.fit(X_train, y_train)
 
@@ -65,7 +64,6 @@ def main():
     top_features = feature_importances['feature'].head(top_n).tolist()
     print(f"Top {top_n} features selected. Dropping the other {len(X.columns) - top_n} noisy features.")
 
-    # Apply strict selection
     X_train_strict = X_train[top_features]
     X_val_strict = X_val[top_features]
     X_tune = X_train_strict.iloc[-30000:]
@@ -109,7 +107,6 @@ def main():
 
     print(f"\n======================================")
     print(f"ABSOLUTE FINAL SCORE LIMIT: {final_rmse:.8f}")
-    print(f"======================================")
 
     models_dir = os.path.join(script_dir, '..', 'models')
     os.makedirs(models_dir, exist_ok=True)

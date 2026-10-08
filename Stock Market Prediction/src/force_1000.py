@@ -24,30 +24,25 @@ def load_and_prep_data(filepath):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    eth_train_path = os.path.join(script_dir, '..', 'datasets', 'train', 'ETH.csv')
+    eth_train_path = os.path.join(script_dir, '..', 'data', 'raw', 'train', 'ETH.csv')
 
     X, y = load_and_prep_data(eth_train_path)
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, shuffle=False)
 
     print("WARNING: Forcing 1000 iterations on all models!")
 
-    # 1. XGBoost forced 1000
     print("\n--- Training XGBoost (1000 Trees, GPU) ---")
     xgb_model = xgb.XGBRegressor(n_estimators=1000, learning_rate=0.05, max_depth=6, tree_method="hist", device="cuda", random_state=42)
     xgb_model.fit(X_train, y_train)
     xgb_preds = xgb_model.predict(X_val)
     print(f"XGBoost Validation RMSE: {root_mean_squared_error(y_val, xgb_preds):.6f}")
 
-    # 2. LightGBM forced 1000
     print("\n--- Training LightGBM (1000 Trees, CPU) ---")
     lgb_model = lgb.LGBMRegressor(n_estimators=1000, learning_rate=0.05, max_depth=6, n_jobs=-1, random_state=42)
     lgb_model.fit(X_train, y_train)
     lgb_preds = lgb_model.predict(X_val)
     print(f"LightGBM Validation RMSE: {root_mean_squared_error(y_val, lgb_preds):.6f}")
 
-    # 3. Random Forest forced 1000
-    # RF doesn't have a fast GPU implementation in sklearn out of the box. 1000 trees on 470k rows would take 10+ minutes.
-    # To demonstrate the concept in a reasonable time, we'll train it on a 30% sample of the data.
     sample_size = int(len(X_train) * 0.3)
     X_train_sub = X_train.iloc[:sample_size]
     y_train_sub = y_train.iloc[:sample_size]
