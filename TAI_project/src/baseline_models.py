@@ -5,8 +5,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import root_mean_squared_error, mean_absolute_error
 import xgboost as xgb
 import lightgbm as lgb
-import joblib
 import time
+import joblib
 import os
 
 def load_and_prep_data(filepath):
@@ -69,6 +69,7 @@ def main():
     print(f"Random Forest Time: {rf_time:.2f}s")
     print(f"Random Forest RMSE: {rf_rmse:.6f}")
     print(f"Random Forest MAE:  {rf_mae:.6f}")
+    joblib.dump(rf, os.path.join(script_dir, '..', 'models', 'random_forest_baseline.joblib'))
 
     # Baseline 2: XGBoost
     print("\n--- Training XGBoost ---")
@@ -84,12 +85,12 @@ def main():
     print(f"XGBoost Time: {xgb_time:.2f}s")
     print(f"XGBoost RMSE: {xgb_rmse:.6f}")
     print(f"XGBoost MAE:  {xgb_mae:.6f}")
+    joblib.dump(xgb_model, os.path.join(script_dir, '..', 'models', 'xgboost_baseline.joblib'))
 
     # Baseline 3: LightGBM
     print("\n--- Training LightGBM ---")
     start_time = time.time()
     lgb_model = lgb.LGBMRegressor(n_estimators=100, learning_rate=0.1, max_depth=6, n_jobs=-1, random_state=42)
-    # LightGBM handles callbacks differently in recent versions
     lgb_model.fit(X_train, y_train, eval_set=[(X_val, y_val)])
     lgb_time = time.time() - start_time
 
@@ -99,16 +100,7 @@ def main():
     print(f"LightGBM Time: {lgb_time:.2f}s")
     print(f"LightGBM RMSE: {lgb_rmse:.6f}")
     print(f"LightGBM MAE:  {lgb_mae:.6f}")
-
-    # Save all models physically to the disk
-    print("\n--- Saving Models to Disk ---")
-    models_dir = os.path.join(script_dir, '..', 'models')
-    os.makedirs(models_dir, exist_ok=True)
-
-    joblib.dump(rf, os.path.join(models_dir, 'rf_baseline.pkl'))
-    joblib.dump(xgb_model, os.path.join(models_dir, 'xgb_baseline.pkl'))
-    joblib.dump(lgb_model, os.path.join(models_dir, 'lgbm_baseline.pkl'))
-    print(f"Saved all 3 models to {os.path.abspath(models_dir)}/")
+    joblib.dump(lgb_model, os.path.join(script_dir, '..', 'models', 'lightgbm_baseline.joblib'))
 
 if __name__ == "__main__":
     main()
