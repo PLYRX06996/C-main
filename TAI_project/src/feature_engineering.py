@@ -71,7 +71,7 @@ def clean_data(df):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    train_dir = os.path.join(script_dir, '..', 'Stock Market Prediction Analysis', 'train')
+    train_dir = os.path.join(script_dir, '..', 'datasets', 'train')
 
     eth_path = os.path.join(train_dir, 'ETH.csv')
     btc_path = os.path.join(train_dir, 'BTC.csv')

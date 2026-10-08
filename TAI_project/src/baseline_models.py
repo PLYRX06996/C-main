@@ -39,12 +39,12 @@ def load_and_prep_data(filepath):
     return X, y
 
 def main():
-    eth_train_path = "../Stock Market Prediction Analysis/train/ETH.csv"
+    eth_train_path = "../datasets/train/ETH.csv"
 
     # Using relative path from the script location
     import os
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    eth_train_path = os.path.join(script_dir, '..', 'Stock Market Prediction Analysis', 'train', 'ETH.csv')
+    eth_train_path = os.path.join(script_dir, '..', 'datasets', 'train', 'ETH.csv')
 
     X, y = load_and_prep_data(eth_train_path)
 
