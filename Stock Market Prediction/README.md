@@ -4,25 +4,29 @@ An empirical research pipeline predicting 10-second forward rolling volatility o
 
 ## Project Overview
 
-In high-frequency cryptocurrency markets, short-horizon volatility forecasting is critical for market making, risk management, and algorithmic execution. This repository implements an end-to-end machine learning framework that processes 5-level bid/ask depth snapshots sampled at high resolution to model forward realized volatility.
+In high-frequency cryptocurrency markets, short-horizon volatility forecasting is critical for market making, risk management, and algorithmic execution. This repository implements an end-to-end quantitative machine learning framework that processes 5-level bid/ask depth snapshots sampled at high resolution to model forward realized volatility.
 
 Key components of the methodology:
 - **Order Book Imbalance (OBI):** Multi-level volume imbalances capturing directional order flow pressure.
 - **Cross-Asset Spillover:** Joint modeling of Bitcoin (BTC) and Solana (SOL) order books at matching timestamps to capture liquidity lead-lag dynamics.
 - **Microstructural Noise Filtering:** Demonstration of early stopping dynamics on tree ensembles to prevent overfitting on tiny volatility targets (~$10^{-5}$).
-- **Bayesian Optimization:** Automated hyperparameter tuning and feature selection using Tree-structured Parzen Estimator (TPE) via Optuna.
+- **Continuous Multi-Scale Volatility (EWMA):** Exponentially weighted moving average variance memory and normalized order book quote range proxies.
+- **Pearson Information Coefficient (IC):** Evaluation via Pearson correlation ($r$) between forward realized volatility and predictions, measuring true directional ranking rather than deceptive scale-only metrics.
 
 ## Benchmark Results
 
 Evaluated on a chronological 80/20 train/validation split (preserving temporal causality without lookahead bias):
 
-| Model | Hyperparameters / Setup | Validation RMSE | Status |
-| :--- | :--- | :--- | :--- |
-| **XGBoost (Hist/CUDA)** | 25 Selected Features, Bayesian Tuned | **0.00007876** | Champion |
-| **LightGBM** | 25 Selected Features, Early Stopping | **0.00008427** | Competitive |
-| **Random Forest** | 150 Trees, Max Depth 8 | **0.00061858** | Baseline |
+| Stage / Model | Hyperparameters / Setup | Pearson Correlation ($r$) | Validation RMSE | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Stage 4: Champion LightGBM** | Continuous L2 Depth, Multi-Scale EWMA, Range Proxies | **+0.6753** | **0.000074** | 🥇 Champion |
+| **Stage 4: Champion XGBoost (CUDA)** | Continuous L2 Depth, Multi-Scale EWMA, Range Proxies | **+0.6675** | **0.000075** | 🥈 Strong GPU Benchmark |
+| **Stage 3: Targeted Econometric** | Squared Returns ($r_t^2$), Absolute Returns, Optuna | **+0.6586** | 0.000076 | Competitive |
+| **Stage 2: Feature Engineering (v2)** | Spreads, Returns, Realized Volatility, OBI | **+0.6441** | 0.000078 | Volatility Clustering |
+| **Stage 1: Raw L2 Baseline (LGBM)** | Raw 5-Level Depth Snapshots | **+0.0947** | 0.000162 | Static LOB Baseline |
+| **Stage 1: Raw L2 Baseline (RF)** | Raw 5-Level Depth Snapshots | **-0.0189** | 0.000386 | Baseline (Directional Failure) |
 
-*Key finding:* Bitcoin ask price levels (`ask_price1_BTC`, `ask_price2_BTC`) serve as strong leading indicators for Ethereum micro-volatility, whereas Solana order book features contributed negligible marginal predictive value.
+*Key finding:* Bitcoin ask price levels (`ask_price1_BTC`, `ask_price2_BTC`) and multi-scale volatility memory serve as decisive leading indicators for Ethereum micro-volatility, pushing directional correlation from $+0.0947 ightarrow +0.6753$.
 
 ## Repository Structure
 
@@ -31,16 +35,21 @@ Evaluated on a chronological 80/20 train/validation split (preserving temporal c
 │   ├── raw/                 # Raw L2 order book CSVs (train/test) [Git-ignored]
 │   └── processed/           # Cached engineered feature matrices
 ├── docs/
-│   ├── methodology.md       # Empirical design and validation strategy
-│   ├── features.md          # Mathematical feature formulas and OBI
+│   ├── methodology.md       # Empirical design, Pearson IC & validation strategy
+│   ├── features.md          # Mathematical feature formulas, OBI, EWMA volatility
 │   └── data_dictionary.md   # Order book column definitions
 ├── models/                  # Serialized champion models and feature sets
 ├── notebooks/               # Exploratory Data Analysis & visual diagnostics
 ├── src/                     # Core pipeline source code
 │   ├── baseline_models.py
+│   ├── baseline_correlation_eval.py
 │   ├── early_stop_models.py
 │   ├── force_1000.py
-│   ├── feature_engineering.py
+│   ├── feature_engineering01.py
+│   ├── feature_engineering02.py
+│   ├── feature_engineering03.py
+│   ├── feature_engineering04_champion.py
+│   ├── feature_reduction.py
 │   ├── feature_selection_tuning.py
 │   ├── advanced_tuning.py
 │   └── final_evaluation_all.py
@@ -69,7 +78,12 @@ pip install -r requirements.txt
 ```
 
 ### Reproducing Benchmark Scores
-To run the full evaluation across all tuned models:
+To evaluate the baseline models:
 ```bash
-python src/final_evaluation_all.py
+python src/baseline_correlation_eval.py
+```
+
+To run the full champion multi-scale pipeline:
+```bash
+python src/feature_engineering04_champion.py
 ```
