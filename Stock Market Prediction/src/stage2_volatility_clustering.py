@@ -20,7 +20,7 @@ import joblib
 import warnings
 warnings.filterwarnings('ignore')
 
-from feature_engineering02 import load_and_merge_data, engineer_financial_features
+from stage2_realized_volatility import load_and_merge_data, engineer_financial_features
 
 def add_targeted_features(df):
     """Add only high-value features on top of v2."""

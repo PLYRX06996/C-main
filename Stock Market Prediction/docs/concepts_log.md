@@ -26,7 +26,7 @@ This living document tracks every mathematical, financial, AI/ML, and Python/lib
 
 ### C. Overfitting on Microstructural Noise & Early Stopping
 * **The Problem:** Because volatility values are tiny, unconstrained decision trees easily split on random high-frequency micro-ticks (noise) rather than true regime shifts.
-* **Empirical Proof (`force_1000.py`):** Forcing 1,000 boosting iterations degraded validation error from $0.000088 \rightarrow 0.000132$.
+* **Empirical Proof (`stage1_overfitting_proof.py`):** Forcing 1,000 boosting iterations degraded validation error from $0.000088 \rightarrow 0.000132$.
 * **Early Stopping:** Halting training when out-of-sample validation error ceases to improve for $N$ consecutive rounds (typically 15 to 50 rounds).
 
 ### D. Lookahead Bias & Temporal Causality

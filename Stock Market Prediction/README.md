@@ -41,18 +41,20 @@ Evaluated on a chronological 80/20 train/validation split (preserving temporal c
 ├── models/                  # Serialized champion models and feature sets
 ├── notebooks/               # Exploratory Data Analysis & visual diagnostics
 ├── src/                     # Core pipeline source code
-│   ├── baseline_models.py
-│   ├── baseline_correlation_eval.py
-│   ├── early_stop_models.py
-│   ├── force_1000.py
-│   ├── feature_engineering01.py
-│   ├── feature_engineering02.py
-│   ├── feature_engineering03.py
-│   ├── feature_engineering04_champion.py
-│   ├── feature_reduction.py
-│   ├── feature_selection_tuning.py
-│   ├── advanced_tuning.py
-│   └── final_evaluation_all.py
+│   ├── stage1_train_baselines.py
+│   ├── stage1_eval_baselines.py
+│   ├── stage1_early_stopping.py
+│   ├── stage1_overfitting_proof.py
+│   ├── stage2_cross_asset_features.py
+│   ├── stage2_realized_volatility.py
+│   ├── stage2_volatility_clustering.py
+│   ├── stage2_pca_vs_tree_reduction.py
+│   ├── stage2_compare_feature_sets.py
+│   ├── stage3_feature_selection_tuning.py
+│   ├── stage3_advanced_tuning.py
+│   ├── stage3_eval_all_models.py
+│   ├── stage4_continuous_features_test.py
+│   └── stage4_champion_pipeline.py
 ├── tests/                   # Data validation tests
 ├── .env.example             # Runtime configuration template
 ├── .gitignore               # Strict ignore rules for large datasets and caches
@@ -80,10 +82,10 @@ pip install -r requirements.txt
 ### Reproducing Benchmark Scores
 To evaluate the baseline models:
 ```bash
-python src/baseline_correlation_eval.py
+python src/stage1_eval_baselines.py
 ```
 
 To run the full champion multi-scale pipeline:
 ```bash
-python src/feature_engineering04_champion.py
+python src/stage4_champion_pipeline.py
 ```
