@@ -8,6 +8,10 @@ import lightgbm as lgb
 import time
 import joblib
 import os
+import warnings
+
+warnings.filterwarnings('ignore', category=FutureWarning)
+warnings.filterwarnings('ignore', category=UserWarning)
 
 def load_and_prep_data(filepath):
     print(f"Loading data from {filepath}...")
@@ -21,6 +25,10 @@ def load_and_prep_data(filepath):
 
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
 
+    for c in features:
+        if df[c].dtype == np.float64:
+            df.loc[df[c].abs() > 1e10, c] = np.nan
+
     X = df[features].astype(np.float32)
     X = X.replace([np.inf, -np.inf], np.nan)
 
@@ -33,11 +41,12 @@ def load_and_prep_data(filepath):
     return X, y
 
 def main():
-    eth_train_path = "../Stock Market Prediction Analysis/train/ETH.csv"
-
-    import os
     script_dir = os.path.dirname(os.path.abspath(__file__))
     eth_train_path = os.path.join(script_dir, '..', 'data', 'raw', 'train', 'ETH.csv')
+    if not os.path.exists(eth_train_path):
+        eth_train_path = os.path.join(script_dir, '..', 'data', 'raw', 'train', 'ETH.csv')
+    if not os.path.exists(eth_train_path):
+        eth_train_path = os.path.join(script_dir, '..', 'data', 'raw', 'train', 'ETH.csv')
 
     X, y = load_and_prep_data(eth_train_path)
 

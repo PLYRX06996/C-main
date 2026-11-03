@@ -133,4 +133,5 @@ This living document tracks every mathematical, financial, AI/ML, and Python/lib
 | **Stage 2** | Financial Engineering | 90 (Returns, Realized Vol, OBI) | **`+0.6441`** | Past realized volatility is the single strongest signal. |
 | **Stage 3** | Pruned Top-25 | 25 Selected Features | **`+0.6435`** | Proved 65 features were redundant noise. |
 | **Stage 4** | Econometric & Optuna | 97 (Squared Returns, Lags) | **`+0.6586`** | ARCH volatility clustering validated. |
-| **Stage 5** | Champion v4 | 135 (Continuous + EWMA + Range) | **`+0.6753` 🥇** | Multi-scale memory across 605k rows. |
+| **Stage 4.5** | Continuous v4 | 135 (Continuous + EWMA + Range) | **`+0.6753`** | Multi-scale memory across 605k rows. |
+| **Stage 5** | Multi-Model Ensemble | 135 (Multi-Model Suite: Depth, Huber, Subsample) | **`+0.6874`** | Dropped RF; SLSQP constrained blend: 50.7% LGBM Conservative + 48.6% XGBoost Conservative beats all single models. |

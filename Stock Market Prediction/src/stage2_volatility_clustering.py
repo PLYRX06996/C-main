@@ -47,10 +47,12 @@ def add_targeted_features(df):
 def clean_data_strict(df):
     """Use v2's proven strict cleaning: drop all NaN rows."""
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
+    df = df.replace([np.inf, -np.inf], np.nan)
+    for c in features:
+        if df[c].dtype == np.float64:
+            df.loc[df[c].abs() > 1e10, c] = np.nan
     X = df[features].astype(np.float32)
     y = df['label'].astype(np.float32)
-    X = X.replace([np.inf, -np.inf], np.nan)
-    y = y.replace([np.inf, -np.inf], np.nan)
     mask = X.notna().all(axis=1) & y.notna()
     X = X[mask]
     y = y[mask]
@@ -59,7 +61,9 @@ def clean_data_strict(df):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    train_dir = os.path.join(script_dir, '..', 'datasets', 'train')
+    train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
     if not os.path.exists(train_dir):
         train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
 
@@ -112,6 +116,8 @@ def main():
         )
         preds = model.predict(X_val)
         corr, _ = pearsonr(y_val, preds)
+        if np.isnan(corr):
+            return -1.0
         return corr
 
     optuna.logging.set_verbosity(optuna.logging.WARNING)
@@ -156,6 +162,7 @@ def main():
         early_stopping_rounds=50, random_state=42
     )
     xgb_model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
+    xgb_model.set_params(device='cpu')
     xgb_preds = xgb_model.predict(X_val)
     xgb_corr, _ = pearsonr(y_val, xgb_preds)
 
@@ -174,10 +181,10 @@ def main():
     best_corr = max(lgb_corr, xgb_corr)
     if lgb_corr >= xgb_corr:
         joblib.dump(final_lgb, os.path.join(models_dir, 'v3_champion.joblib'))
-        print(f"\n🏆 Champion: LightGBM (r={lgb_corr:.6f})")
+        print(f"\nSelected Model: LightGBM (r={lgb_corr:.6f})")
     else:
         joblib.dump(xgb_model, os.path.join(models_dir, 'v3_champion.joblib'))
-        print(f"\n🏆 Champion: XGBoost (r={xgb_corr:.6f})")
+        print(f"\nSelected Model: XGBoost (r={xgb_corr:.6f})")
 
     imp = pd.DataFrame({'feature': X.columns, 'importance': final_lgb.feature_importances_})
     imp = imp.sort_values('importance', ascending=False)

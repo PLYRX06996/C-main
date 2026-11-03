@@ -8,6 +8,7 @@
 #   ./run_all.sh stage2    # Runs only Stage 2 scripts
 #   ./run_all.sh stage3    # Runs only Stage 3 scripts
 #   ./run_all.sh stage4    # Runs only Stage 4 scripts
+#   ./run_all.sh stage5    # Runs only Stage 5 scripts
 # ==============================================================================
 
 # Ensure execution from project root
@@ -25,18 +26,32 @@ else
     PYTHON_BIN="$(which python)"
 fi
 echo "Using Python: $PYTHON_BIN"
+export PYTHONUNBUFFERED=1
 
-FILTER="${1:-all}"
-
-# Find scripts based on filter
-if [ "$FILTER" = "all" ]; then
+if [ "$#" -eq 0 ] || [ "$1" = "all" ]; then
     SCRIPTS=(src/stage*.py)
+    FILTER="all"
 else
-    SCRIPTS=(src/${FILTER}*.py)
+    SCRIPTS=()
+    FILTER="$*"
+    for arg in "$@"; do
+        if [ -f "$arg" ]; then
+            SCRIPTS+=("$arg")
+        elif [ -f "src/$arg" ]; then
+            SCRIPTS+=("src/$arg")
+        elif [ -f "src/${arg}.py" ]; then
+            SCRIPTS+=("src/${arg}.py")
+        else
+            matches=(src/${arg}*.py)
+            if [ -e "${matches[0]}" ]; then
+                SCRIPTS+=("${matches[@]}")
+            fi
+        fi
+    done
 fi
 
 if [ ${#SCRIPTS[@]} -eq 0 ] || [ ! -e "${SCRIPTS[0]}" ]; then
-    echo "No scripts found matching pattern: src/${FILTER}*.py"
+    echo "No scripts found matching: $FILTER"
     exit 1
 fi
 

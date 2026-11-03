@@ -7,13 +7,15 @@
   $$\text{abs\_return} = |r_t|$$
 - **Exponentially Weighted Moving Average (EWMA) Volatility:**
   $$\sigma_{t,\text{EWMA}}^2 = \lambda \sigma_{t-1}^2 + (1-\lambda) r_t^2$$
-  Evaluated across spans of 10, 30, and 60 ticks to model rapid variance shock memory.
+  Evaluated across spans of 10, 30, 60, 120, and 300 ticks to model rapid variance shock memory.
+- **Multi-Horizon Rolling Realized Volatilities:**
+  Rolling standard deviation of log returns across horizons of 5, 10, 15, 30, 60, 120, and 300 ticks.
 
 ## 2. Multi-Level Order Book Imbalance (OBI)
 Order Book Imbalance measures the asymmetry between buying and selling interest across level $k$:
 $$\text{OBI}_k = \frac{\text{bid\_volume}_k - \text{ask\_volume}_k}{\text{bid\_volume}_k + \text{ask\_volume}_k}$$
 
-Calculated across levels 1 through 3 for ETH, BTC, and SOL.
+Calculated across levels 1 through 5 for ETH, BTC, and SOL.
 
 ## 3. Bid-Ask Spread & Range Metrics
 - **Absolute Spread:**

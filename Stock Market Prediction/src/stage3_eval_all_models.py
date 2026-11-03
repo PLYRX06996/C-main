@@ -11,12 +11,16 @@ import warnings
 warnings.filterwarnings('ignore')
 
 from stage2_cross_asset_features import load_and_merge_data, create_features
-from stage3_feature_selection_tuning import clean_data
+from stage3_feature_selection_tuning import clean_data, add_cumulative_depth
 
 def main():
     print("Preparing final comparison report for all 3 models...")
     script_dir = os.path.dirname(os.path.abspath(__file__))
     train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
     models_dir = os.path.join(script_dir, '..', 'models')
 
     df_full = load_and_merge_data(
@@ -25,14 +29,20 @@ def main():
         os.path.join(train_dir, 'SOL.csv')
     )
     df_full = create_features(df_full)
+    df_full = add_cumulative_depth(df_full)
     X, y = clean_data(df_full)
 
-    top_features = joblib.load(os.path.join(models_dir, 'top_features_list.joblib'))
-    X = X[top_features]
+    top_features_path = os.path.join(models_dir, 'top_features_list.joblib')
+    if os.path.exists(top_features_path):
+        top_features = joblib.load(top_features_path)
+        valid_features = [f for f in top_features if f in X.columns]
+        X = X[valid_features]
+    else:
+        print("Warning: top_features_list.joblib not found, using all features.")
 
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, shuffle=False)
 
-    print(f"Training on {len(X_train)} rows using the best {len(top_features)} features.")
+    print(f"Training on {len(X_train)} rows using the best {X.shape[1]} features.")
 
     print("\nTraining XGBoost...")
     xgb_model = xgb.XGBRegressor(
@@ -41,6 +51,7 @@ def main():
         tree_method="hist", device="cuda", early_stopping_rounds=50, random_state=42
     )
     xgb_model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
+    xgb_model.set_params(device="cpu")
     xgb_preds = xgb_model.predict(X_val)
     xgb_rmse = root_mean_squared_error(y_val, xgb_preds)
 

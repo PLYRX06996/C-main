@@ -7,6 +7,10 @@ import lightgbm as lgb
 import time
 import os
 import joblib
+import warnings
+
+warnings.filterwarnings('ignore', category=FutureWarning)
+warnings.filterwarnings('ignore', category=UserWarning)
 
 def load_and_prep_data(filepath):
     print(f"Loading data from {filepath}...")
@@ -14,11 +18,13 @@ def load_and_prep_data(filepath):
 
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
 
+    df = df.replace([np.inf, -np.inf], np.nan)
+    for c in features:
+        if df[c].dtype == np.float64:
+            df.loc[df[c].abs() > 1e10, c] = np.nan
+
     X = df[features].astype(np.float32)
     y = df['label'].astype(np.float32)
-
-    X = X.replace([np.inf, -np.inf], np.nan)
-    y = y.replace([np.inf, -np.inf], np.nan)
 
     mask = X.notna().all(axis=1) & y.notna()
     X = X[mask]
@@ -29,6 +35,10 @@ def load_and_prep_data(filepath):
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     eth_train_path = os.path.join(script_dir, '..', 'data', 'raw', 'train', 'ETH.csv')
+    if not os.path.exists(eth_train_path):
+        eth_train_path = os.path.join(script_dir, '..', 'data', 'raw', 'train', 'ETH.csv')
+    if not os.path.exists(eth_train_path):
+        eth_train_path = os.path.join(script_dir, '..', 'data', 'raw', 'train', 'ETH.csv')
 
     X, y = load_and_prep_data(eth_train_path)
 
@@ -59,6 +69,7 @@ def main():
     xgb_time = time.time() - start_time
 
     print(f"-> XGBoost stopped at tree number {xgb_model.best_iteration}")
+    xgb_model.set_params(device="cpu")
     xgb_preds = xgb_model.predict(X_val)
     xgb_rmse = root_mean_squared_error(y_val, xgb_preds)
     print(f"XGBoost Total Time: {xgb_time:.2f}s")

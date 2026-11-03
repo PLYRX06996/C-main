@@ -1,0 +1,83 @@
+Using Python: .venv/bin/python
+==================================================================
+ Starting Sequential Execution of 1 Script(s)
+ Filter: stage5
+==================================================================
+
+------------------------------------------------------------------
+ [1/1] Running: src/stage5_ultimate_ensemble.py
+ Started at: 2026-10-26 15:45:23
+------------------------------------------------------------------
+1. Loading raw order book tick feeds (ETH, BTC, SOL)...
+2. Engineering multi-scale volatility, EWMA, and cross-asset signals...
+3. Sanitizing outliers and casting data to float32...
+
+Dataset: 484744 Train rows | 121187 Validation rows | 165 Features
+
+--- [1/2] Training LightGBM Champion (CPU) ---
+[LightGBM] [Info] Auto-choosing col-wise multi-threading, the overhead of testing was 0.100544 seconds.
+You can set `force_col_wise=true` to remove the overhead.
+[LightGBM] [Info] Total Bins 38832
+[LightGBM] [Info] Number of data points in the train set: 484744, number of used features: 165
+[LightGBM] [Info] Start training from score 0.000053
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+-> LightGBM stopped @ iter 74 | r = 0.700167 | RMSE = 0.00005557
+
+--- [2/2] Training XGBoost Champion (CUDA Hist) ---
+-> XGBoost stopped @ iter 78 | r = 0.691379 | RMSE = 0.00005626
+
+--- Optimizing Weighted Ensemble Blend ---
+Optimal Blend: 100.0% LightGBM + 0.0% XGBoost
+Ensemble Pearson r:    0.700167
+Ensemble RMSE:         0.00005557
+
+======================================================================
+            ALL-STAGE BENCHMARK PROGRESSION LEADERBOARD
+======================================================================
+  Stage 1 Baseline (Raw Order Book)         : r = 0.094700
+  Stage 2 Baseline (Returns + 60t RVol)     : r = 0.644182
+  Stage 2 Tuned    (Volatility Clustering)  : r = 0.657238
+  Stage 3 Tuned    (Top 25 Selected Feats)  : r = 0.653100
+  Stage 4 Champion (Continuous Feed + EWMA) : r = 0.677884
+  Stage 5 LightGBM (Multi-Scale Volatility) : r = 0.700167
+  Stage 5 XGBoost  (Multi-Scale Volatility) : r = 0.691379
+  STAGE 5 ULTIMATE ENSEMBLE BLEND           : r = 0.700167  🏆
+======================================================================
+
+Top 15 Most Influential Features:
+             feature  importance
+         ret_squared         357
+        ewma_vol_300         196
+          abs_return         160
+       norm_range_60         123
+        ewma_vol_120         117
+    realized_vol_300          80
+    ewma_vol_300_BTC          78
+realized_vol_300_SOL          76
+                obi1          68
+   mid_ratio_ETH_BTC          67
+realized_vol_300_BTC          65
+       mid_price_BTC          62
+   norm_range_60_BTC          55
+realized_vol_120_SOL          53
+realized_vol_120_BTC          53
+--> SUCCESS: src/stage5_ultimate_ensemble.py completed in 22s
+
+==================================================================
+ All selected scripts finished in 22s
+==================================================================

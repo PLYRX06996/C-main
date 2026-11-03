@@ -90,6 +90,11 @@ def engineer_champion_features(df):
 
 def clean_and_prepare(df):
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
+    df = df.replace([np.inf, -np.inf], np.nan)
+    for c in features:
+        if df[c].dtype == np.float64:
+            df.loc[df[c].abs() > 1e10, c] = np.nan
+
     X = df[features].astype(np.float32)
     y = df['label'].astype(np.float32)
     
@@ -102,7 +107,9 @@ def clean_and_prepare(df):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    train_dir = os.path.join(script_dir, '..', 'datasets', 'train')
+    train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
     if not os.path.exists(train_dir):
         train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
         
@@ -152,6 +159,7 @@ def main():
         eval_set=[(X_val, y_val)],
         verbose=False
     )
+    xgb_model.set_params(device='cpu')
     xgb_preds = xgb_model.predict(X_val)
     xgb_corr, _ = pearsonr(y_val, xgb_preds)
     print(f"XGBoost Pearson Correlation (r):  {xgb_corr:.6f} (stopped @ iter {xgb_model.best_iteration})")
@@ -167,15 +175,15 @@ def main():
     joblib.dump(list(X.columns), os.path.join(models_dir, 'champion_features_v4.joblib'))
     
     print("\n" + "="*65)
-    print("                 BENCHMARK LEADERBOARD (r)")
+    print("                 BENCHMARK PROGRESSION (r)")
     print("="*65)
     print(f"  Baseline (Raw LOB Features)       :  0.0947")
     print(f"  v2 (Returns + Simple RVol)        :  0.6441")
     print(f"  v3 (Lags + Squared Returns)       :  0.6586")
-    print(f"  v4 LightGBM (Continuous + EWMA)  :  {lgb_corr:.6f}  🏆")
+    print(f"  v4 LightGBM (Continuous + EWMA)  :  {lgb_corr:.6f}")
     print(f"  v4 XGBoost  (Continuous + EWMA)  :  {xgb_corr:.6f}")
     print("="*65)
-    print(f"\nSaved Champion {champion_name} (r={best_corr:.6f}) to models/champion_model_v4.joblib")
+    print(f"\nSaved Best Model ({champion_name}, r={best_corr:.6f}) to models/champion_model_v4.joblib")
 
 if __name__ == "__main__":
     main()

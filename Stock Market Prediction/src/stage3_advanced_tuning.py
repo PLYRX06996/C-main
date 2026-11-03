@@ -52,11 +52,13 @@ def create_features(df):
 
 def clean_data(df):
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
+    df = df.replace([np.inf, -np.inf], np.nan)
+    for c in features:
+        if df[c].dtype == np.float64:
+            df.loc[df[c].abs() > 1e10, c] = np.nan
+
     X = df[features].astype(np.float32)
     y = df['label'].astype(np.float32)
-
-    X = X.replace([np.inf, -np.inf], np.nan)
-    y = y.replace([np.inf, -np.inf], np.nan)
 
     mask = X.notna().all(axis=1) & y.notna()
     X = X[mask]
@@ -67,6 +69,10 @@ def clean_data(df):
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
 
     df_full = load_and_merge_data(
         os.path.join(train_dir, 'ETH.csv'),
@@ -95,6 +101,7 @@ def main():
         }
         model = xgb.XGBRegressor(**params, random_state=42)
         model.fit(X_tune_train, y_tune_train, eval_set=[(X_val, y_val)], verbose=False)
+        model.set_params(device='cpu')
         preds = model.predict(X_val)
         return root_mean_squared_error(y_val, preds)
 
@@ -152,9 +159,10 @@ def main():
     final_xgb = xgb.XGBRegressor(**best_xgb_params, random_state=42)
     final_xgb.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=100)
 
+    final_xgb.set_params(device='cpu')
     final_preds = final_xgb.predict(X_val)
     final_rmse = root_mean_squared_error(y_val, final_preds)
-    print(f"*** FINAL XGBOOST SCORE: {final_rmse:.8f} ***")
+    print(f"Final Tuned XGBoost Validation RMSE: {final_rmse:.8f}")
 
     importances = final_xgb.feature_importances_
     features_list = X.columns

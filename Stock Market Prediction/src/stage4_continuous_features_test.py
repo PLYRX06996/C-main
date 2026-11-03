@@ -60,13 +60,22 @@ def build_proper_features(df):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    train_dir = os.path.join(script_dir, '..', 'datasets', 'train')
+    train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
     
     df = load_and_merge(train_dir)
     df = build_proper_features(df)
     
 
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
+    df = df.replace([np.inf, -np.inf], np.nan)
+    for c in features:
+        if df[c].dtype == np.float64:
+            df.loc[df[c].abs() > 1e10, c] = np.nan
+
     X = df[features].astype(np.float32)
     y = df['label'].astype(np.float32)
     

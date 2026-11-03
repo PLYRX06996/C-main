@@ -13,11 +13,13 @@ from stage2_cross_asset_features import load_and_merge_data, create_features
 
 def clean_data(df):
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
+    df = df.replace([np.inf, -np.inf], np.nan)
+    for c in features:
+        if df[c].dtype == np.float64:
+            df.loc[df[c].abs() > 1e10, c] = np.nan
+
     X = df[features].astype(np.float32)
     y = df['label'].astype(np.float32)
-
-    X = X.replace([np.inf, -np.inf], np.nan)
-    y = y.replace([np.inf, -np.inf], np.nan)
 
     mask = X.notna().all(axis=1) & y.notna()
     X = X[mask]
@@ -25,9 +27,20 @@ def clean_data(df):
 
     return X, y
 
+def add_cumulative_depth(df):
+    for prefix in ['', '_BTC', '_SOL']:
+        df[f'cum_bid_vol_{prefix}'] = df[[f'bid_volume{i}{prefix}' for i in range(1,6)]].sum(axis=1)
+        df[f'cum_ask_vol_{prefix}'] = df[[f'ask_volume{i}{prefix}' for i in range(1,6)]].sum(axis=1)
+        df[f'order_book_skew_{prefix}'] = df[f'cum_bid_vol_{prefix}'] / (df[f'cum_ask_vol_{prefix}'] + 1e-8)
+    return df
+
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
 
     df_full = load_and_merge_data(
         os.path.join(train_dir, 'ETH.csv'),
@@ -35,16 +48,7 @@ def main():
         os.path.join(train_dir, 'SOL.csv')
     )
     df_full = create_features(df_full)
-
-    def cumulative_depth(df, prefix):
-        df[f'cum_bid_vol_{prefix}'] = df[[f'bid_volume{i}{prefix}' for i in range(1,6)]].sum(axis=1)
-        df[f'cum_ask_vol_{prefix}'] = df[[f'ask_volume{i}{prefix}' for i in range(1,6)]].sum(axis=1)
-        df[f'order_book_skew_{prefix}'] = df[f'cum_bid_vol_{prefix}'] / (df[f'cum_ask_vol_{prefix}'] + 1e-8)
-        return df
-
-    df_full = cumulative_depth(df_full, '')
-    df_full = cumulative_depth(df_full, '_BTC')
-    df_full = cumulative_depth(df_full, '_SOL')
+    df_full = add_cumulative_depth(df_full)
 
     X, y = clean_data(df_full)
 
@@ -84,6 +88,7 @@ def main():
         }
         model = xgb.XGBRegressor(**params, random_state=42)
         model.fit(X_tune, y_tune, eval_set=[(X_val_strict, y_val)], verbose=False)
+        model.set_params(device='cpu')
         preds = model.predict(X_val_strict)
         return root_mean_squared_error(y_val, preds)
 
@@ -102,14 +107,16 @@ def main():
     final_model = xgb.XGBRegressor(**best_params, random_state=42)
     final_model.fit(X_train_strict, y_train, eval_set=[(X_val_strict, y_val)], verbose=100)
 
+    final_model.set_params(device='cpu')
     final_preds = final_model.predict(X_val_strict)
     final_rmse = root_mean_squared_error(y_val, final_preds)
 
     print(f"\n======================================")
-    print(f"ABSOLUTE FINAL SCORE LIMIT: {final_rmse:.8f}")
+    print(f"Tuned Model Validation RMSE: {final_rmse:.8f}")
 
     models_dir = os.path.join(script_dir, '..', 'models')
     os.makedirs(models_dir, exist_ok=True)
+    joblib.dump(final_model, os.path.join(models_dir, 'tuned_feature_selected_xgboost.joblib'))
     joblib.dump(final_model, os.path.join(models_dir, 'god_mode_xgboost.joblib'))
     joblib.dump(top_features, os.path.join(models_dir, 'top_features_list.joblib'))
 

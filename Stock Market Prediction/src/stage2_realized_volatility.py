@@ -67,7 +67,7 @@ def clean_data(df):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    train_dir = os.path.join(script_dir, '..', 'datasets', 'train')
+    train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
     if not os.path.exists(train_dir):
         train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
         

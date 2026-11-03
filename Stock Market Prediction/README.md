@@ -19,14 +19,15 @@ Evaluated on a chronological 80/20 train/validation split (preserving temporal c
 
 | Stage / Model | Hyperparameters / Setup | Pearson Correlation ($r$) | Validation RMSE | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **Stage 4: Champion LightGBM** | Continuous L2 Depth, Multi-Scale EWMA, Range Proxies | **+0.6753** | **0.000074** | 🥇 Champion |
-| **Stage 4: Champion XGBoost (CUDA)** | Continuous L2 Depth, Multi-Scale EWMA, Range Proxies | **+0.6675** | **0.000075** | 🥈 Strong GPU Benchmark |
+| **Stage 5: Model Ensemble** | Multi-Model Blend (50.7% LGBM + 48.6% XGB + 0.8% LGBM Deep) | **+0.6874** | **0.000057** | Multi-Model Ensemble |
+| **Stage 4: Continuous LightGBM** | Continuous L2 Depth, Multi-Scale EWMA, Range Proxies | **+0.6753** | **0.000074** | Best Single Model |
+| **Stage 4: Continuous XGBoost (CUDA)** | Continuous L2 Depth, Multi-Scale EWMA, Range Proxies | **+0.6675** | **0.000075** | GPU Benchmark |
 | **Stage 3: Targeted Econometric** | Squared Returns ($r_t^2$), Absolute Returns, Optuna | **+0.6586** | 0.000076 | Competitive |
 | **Stage 2: Feature Engineering (v2)** | Spreads, Returns, Realized Volatility, OBI | **+0.6441** | 0.000078 | Volatility Clustering |
 | **Stage 1: Raw L2 Baseline (LGBM)** | Raw 5-Level Depth Snapshots | **+0.0947** | 0.000162 | Static LOB Baseline |
 | **Stage 1: Raw L2 Baseline (RF)** | Raw 5-Level Depth Snapshots | **-0.0189** | 0.000386 | Baseline (Directional Failure) |
 
-*Key finding:* Bitcoin ask price levels (`ask_price1_BTC`, `ask_price2_BTC`) and multi-scale volatility memory serve as decisive leading indicators for Ethereum micro-volatility, pushing directional correlation from $+0.0947 ightarrow +0.6753$.
+*Key finding:* Bitcoin ask price levels (`ask_price1_BTC`, `ask_price2_BTC`), multi-scale volatility memory, and weighted ensembling across LightGBM and XGBoost push directional Pearson correlation from $+0.0947 \rightarrow +0.6874$.
 
 ## Repository Structure
 
@@ -54,7 +55,8 @@ Evaluated on a chronological 80/20 train/validation split (preserving temporal c
 │   ├── stage3_advanced_tuning.py
 │   ├── stage3_eval_all_models.py
 │   ├── stage4_continuous_features_test.py
-│   └── stage4_champion_pipeline.py
+│   ├── stage4_champion_pipeline.py
+│   └── stage5_model_ensemble.py
 ├── tests/                   # Data validation tests
 ├── .env.example             # Runtime configuration template
 ├── .gitignore               # Strict ignore rules for large datasets and caches
@@ -85,7 +87,7 @@ To evaluate the baseline models:
 python src/stage1_eval_baselines.py
 ```
 
-To run the full champion multi-scale pipeline:
+To run the full multi-model ensemble pipeline:
 ```bash
-python src/stage4_champion_pipeline.py
+python src/stage5_model_ensemble.py
 ```

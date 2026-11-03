@@ -44,11 +44,13 @@ def clean_data(df):
     print("Cleaning data (removing NaNs and Infinity overflows)...")
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
 
+    df = df.replace([np.inf, -np.inf], np.nan)
+    for c in features:
+        if df[c].dtype == np.float64:
+            df.loc[df[c].abs() > 1e10, c] = np.nan
+
     X = df[features].astype(np.float32)
     y = df['label'].astype(np.float32)
-
-    X = X.replace([np.inf, -np.inf], np.nan)
-    y = y.replace([np.inf, -np.inf], np.nan)
 
     mask = X.notna().all(axis=1) & y.notna()
 
@@ -61,6 +63,10 @@ def clean_data(df):
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
+    if not os.path.exists(train_dir):
+        train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
 
     eth_path = os.path.join(train_dir, 'ETH.csv')
     btc_path = os.path.join(train_dir, 'BTC.csv')
@@ -97,6 +103,7 @@ def main():
     xgb_time = time.time() - start_time
     print(f"-> XGBoost stopped at tree {xgb_model.best_iteration}")
 
+    xgb_model.set_params(device="cpu")
     preds = xgb_model.predict(X_val)
     xgb_rmse = root_mean_squared_error(y_val, preds)
 
