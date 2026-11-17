@@ -10,7 +10,16 @@ import joblib
 def load_and_merge_data(eth_path, btc_path, sol_path):
     print("Loading ETH, BTC, and SOL data...")
 
-    df_eth = pd.read_csv(eth_path)
+    if os.path.exists(eth_path):
+        df_eth = pd.read_csv(eth_path)
+    else:
+        d = os.path.dirname(eth_path)
+        f1 = os.path.join(d, 'ETH-01.csv')
+        f2 = os.path.join(d, 'ETH-02.csv')
+        if os.path.exists(f1) and os.path.exists(f2):
+            df_eth = pd.concat([pd.read_csv(f1), pd.read_csv(f2)], ignore_index=True)
+        else:
+            raise FileNotFoundError(f"Neither {eth_path} nor split files {f1}, {f2} exist.")
     df_btc = pd.read_csv(btc_path)
     df_sol = pd.read_csv(sol_path)
 

@@ -1,0 +1,212 @@
+{
+  "dataset": {
+    "raw_rows_per_asset": 631292,
+    "usable_continuous_rows": 605938,
+    "total_features": 135,
+    "raw_price_level_features": 33,
+    "stationary_features": 102,
+    "volatility_features": 30,
+    "assets": [
+      "ETH",
+      "BTC",
+      "SOL"
+    ],
+    "depth_levels": 5,
+    "prediction_horizon_steps": 10,
+    "prediction_horizon_text": "10-second forward rolling volatility",
+    "median_delta_t_seconds": 1.0,
+    "train_80_20": {
+      "train": 484750,
+      "val": 121188
+    },
+    "split_3way": {
+      "train_rows": 424156,
+      "val_rows": 90890,
+      "test_rows": 90892,
+      "train_pct": 70.0,
+      "val_pct": 15.0,
+      "test_pct": 15.0
+    }
+  },
+  "stage1_raw_baselines": {
+    "features": 21,
+    "rf_pearson_r": -0.0189,
+    "xgb_pearson_r": 0.0887,
+    "lgbm_pearson_r": 0.0947,
+    "early_stopping_rounds_xgb": 5,
+    "early_stopping_rounds_lgbm": 6,
+    "early_stopping_rmse": 7.9e-05,
+    "forced_1000_rmse_xgb": 0.000132,
+    "forced_1000_rmse_lgbm": 0.000164
+  },
+  "stage2_feature_engineering": {
+    "v2_features_count": 90,
+    "v2_pearson_r": 0.6442,
+    "tree_selected_top25_r": 0.6435,
+    "pca_95pct_components": 44,
+    "pca_95pct_r": 0.5345,
+    "pca_25_components": 25,
+    "pca_25_r": 0.5184
+  },
+  "stage3_optuna_tuning": {
+    "v3_features_count": 97,
+    "v3_default_r": 0.6526,
+    "v3_optuna_lgbm_r": 0.6558,
+    "v3_optuna_xgb_r": 0.644,
+    "run_to_run_variance": "\u00b10.003"
+  },
+  "stage4_multiscale": {
+    "features_count": 135,
+    "lgbm_r": 0.6811,
+    "xgb_r": 0.6851
+  },
+  "stage5_ensembling_80_20": {
+    "lgbm_cons_r": 0.6876,
+    "lgbm_deep_r": 0.6813,
+    "huber_lgbm_r": 0.6786,
+    "xgb_cons_r": 0.6898,
+    "xgb_deep_r": 0.6872,
+    "equal_weight_blend_r": 0.6896,
+    "slsqp_blend_r": 0.691
+  },
+  "stage6_stacking_80_20": {
+    "xgb_metalearner_r": 0.6615,
+    "ridge_metalearner_r": 0.6895,
+    "linear_slsqp_r": 0.691
+  },
+  "stage7_optuna_blend_80_20": {
+    "lgbm_tuned_r": 0.6882,
+    "xgb_tuned_r": 0.6905,
+    "tuned_blend_r": 0.6914
+  },
+  "benchmark_3way_oos": {
+    "Baseline 1: Persistence (rvol10)": {
+      "val_pearson_r": 0.6995746493339539,
+      "val_rmse": 6.998186290729791e-05,
+      "test_pearson_r": 0.5441055297851562,
+      "test_rmse": 6.200208736117929e-05
+    },
+    "Baseline 2: Univariate OLS (rvol10)": {
+      "val_pearson_r": 0.6995745897293091,
+      "val_rmse": 7.080309296725318e-05,
+      "test_pearson_r": 0.5441055297851562,
+      "test_rmse": 6.048881186870858e-05
+    },
+    "Baseline 3: Calibrated RidgeCV (30 Vol)": {
+      "val_pearson_r": 0.7865983247756958,
+      "val_rmse": 5.627060090773739e-05,
+      "test_pearson_r": 0.6859655976295471,
+      "test_rmse": 4.8406778660137206e-05
+    },
+    "LightGBM Conservative (Depth 4)": {
+      "val_pearson_r": 0.7636026547962181,
+      "val_rmse": 5.941902988645622e-05,
+      "test_pearson_r": 0.6694833341385633,
+      "test_rmse": 5.342502824530946e-05
+    },
+    "XGBoost Conservative (Depth 4)": {
+      "val_pearson_r": 0.7360470294952393,
+      "val_rmse": 6.556585140060633e-05,
+      "test_pearson_r": 0.6748964786529541,
+      "test_rmse": 4.981017627869733e-05
+    },
+    "LightGBM Deep (Depth 6)": {
+      "val_pearson_r": 0.7542609014801153,
+      "val_rmse": 6.065067103401708e-05,
+      "test_pearson_r": 0.6458742658164798,
+      "test_rmse": 5.571796332002206e-05
+    },
+    "XGBoost Deep (Depth 6)": {
+      "val_pearson_r": 0.7372965812683105,
+      "val_rmse": 6.558928726008162e-05,
+      "test_pearson_r": 0.6763564348220825,
+      "test_rmse": 4.988011278328486e-05
+    },
+    "Equal-Weight Tree Blend (50/50)": {
+      "val_pearson_r": 0.7582531571789544,
+      "val_rmse": 6.161067323695394e-05,
+      "test_pearson_r": 0.6828015072722935,
+      "test_rmse": 4.899087567849116e-05
+    },
+    "Stage 5: SLSQP Tree Blend (Tuned on Val)": {
+      "val_pearson_r": 0.7636249761834865,
+      "val_rmse": 5.950224017277241e-05,
+      "test_pearson_r": 0.6710857887886463,
+      "test_rmse": 5.298764718742868e-05
+    },
+    "LightGBM Tuned (Stage 7)": {
+      "val_pearson_r": 0.7603594190219436,
+      "val_rmse": 6.0328910125904046e-05,
+      "test_pearson_r": 0.6736953001013996,
+      "test_rmse": 5.172372284963206e-05
+    },
+    "XGBoost Tuned (Stage 7)": {
+      "val_pearson_r": 0.7375789880752563,
+      "val_rmse": 6.555487198056653e-05,
+      "test_pearson_r": 0.6751633286476135,
+      "test_rmse": 4.990410525351763e-05
+    },
+    "Econometric-Tree Hybrid (1/3 Ridge, 1/3 LGB, 1/3 XGB)": {
+      "val_pearson_r": 0.7841222918801564,
+      "val_rmse": 5.839757496573362e-05,
+      "test_pearson_r": 0.6887234438150653,
+      "test_rmse": 4.797495820146296e-05
+    }
+  },
+  "har_rv_family": {
+    "Persistence Baseline (rvol10)": {
+      "val_pearson_r": 0.69957465,
+      "val_rmse": 6.998186290729791e-05,
+      "test_pearson_r": 0.5441055,
+      "test_rmse": 6.200208736117929e-05,
+      "test_qlike": 1519149.5
+    },
+    "Canonical HAR-RV (Corsi 2009 OLS)": {
+      "val_pearson_r": 0.77402085,
+      "val_rmse": 5.8437104598851874e-05,
+      "test_pearson_r": 0.6710448,
+      "test_rmse": 5.001984391128644e-05,
+      "test_qlike": 0.7218151092529297
+    },
+    "Extended Multi-Scale HAR-RV (ETH OLS)": {
+      "val_pearson_r": 0.7820181,
+      "val_rmse": 5.6934259191621095e-05,
+      "test_pearson_r": 0.68203044,
+      "test_rmse": 4.879376137978397e-05,
+      "test_qlike": 0.7133380174636841
+    },
+    "Cross-Asset HAR-RV-X (ETH+BTC OLS)": {
+      "val_pearson_r": 0.78466046,
+      "val_rmse": 5.662223702529445e-05,
+      "test_pearson_r": 0.6843137,
+      "test_rmse": 4.863657522946596e-05,
+      "test_qlike": 0.7123162150382996
+    },
+    "Regularized HAR-RV (RidgeCV 30 Vol)": {
+      "val_pearson_r": 0.7865983,
+      "val_rmse": 5.627060090773739e-05,
+      "test_pearson_r": 0.6859656,
+      "test_rmse": 4.8406778660137206e-05,
+      "test_qlike": 0.7110545039176941
+    },
+    "Microstructure HAR-RV (RidgeCV Vol+LOB)": {
+      "val_pearson_r": 0.79152834,
+      "val_rmse": 5.584689643001184e-05,
+      "test_pearson_r": 0.020166315,
+      "test_rmse": 0.0015232989098876,
+      "test_qlike": 0.7164124250411987
+    }
+  },
+  "integrity_and_stationarity": {
+    "label_recomputation_pearson_r": 0.9907,
+    "label_exact_match_1e10_pct": 88.0,
+    "label_mean_abs_deviation": 1.39e-06,
+    "xgb_test_r_with_raw_prices": 0.6749,
+    "xgb_test_r_without_raw_prices": 0.675,
+    "label_overlap_caveat": "The label window includes the contemporaneous return r_t; features contain no future information."
+  },
+  "regimes": {
+    "q33": 2.5357003323733807e-05,
+    "q67": 6.207422848092392e-05
+  }
+}

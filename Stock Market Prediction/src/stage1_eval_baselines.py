@@ -10,7 +10,16 @@ import warnings
 warnings.filterwarnings('ignore')
 
 def load_and_prep_data(filepath):
-    df = pd.read_csv(filepath)
+    if os.path.exists(filepath):
+        df = pd.read_csv(filepath)
+    else:
+        d = os.path.dirname(filepath)
+        f1 = os.path.join(d, 'ETH-01.csv')
+        f2 = os.path.join(d, 'ETH-02.csv')
+        if os.path.exists(f1) and os.path.exists(f2):
+            df = pd.concat([pd.read_csv(f1), pd.read_csv(f2)], ignore_index=True)
+        else:
+            raise FileNotFoundError(f"Neither {filepath} nor split files {f1}, {f2} exist.")
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
     
 

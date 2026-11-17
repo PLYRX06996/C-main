@@ -73,7 +73,7 @@ def main():
     corr_v3 = train_and_eval(X_train_v3, y_train_v3, X_val_v3, y_val_v3, "v3: v2 + Lags + Squared + AbsRet + RVol60")
     print("="*75)
     delta = corr_v3 - corr_v2
-    print(f"\n  Δ Improvement: {delta:+.6f} ({'✅ v3 wins' if delta > 0 else '⚠️ v2 still better'})")
+    print(f"\n  Delta Improvement: {delta:+.6f} ({'v3 outperforms v2' if delta > 0 else 'v2 outperforms v3'})")
 
 if __name__ == "__main__":
     main()

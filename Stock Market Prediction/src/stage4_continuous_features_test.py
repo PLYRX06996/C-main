@@ -8,7 +8,13 @@ import warnings
 warnings.filterwarnings('ignore')
 
 def load_and_merge(train_dir):
-    df_eth = pd.read_csv(os.path.join(train_dir, 'ETH.csv'))
+    eth_path = os.path.join(train_dir, 'ETH.csv')
+    if os.path.exists(eth_path):
+        df_eth = pd.read_csv(eth_path)
+    else:
+        df_eth1 = pd.read_csv(os.path.join(train_dir, 'ETH-01.csv'))
+        df_eth2 = pd.read_csv(os.path.join(train_dir, 'ETH-02.csv'))
+        df_eth = pd.concat([df_eth1, df_eth2], ignore_index=True)
     df_btc = pd.read_csv(os.path.join(train_dir, 'BTC.csv'))
     df_sol = pd.read_csv(os.path.join(train_dir, 'SOL.csv'))
 
@@ -36,7 +42,7 @@ def build_proper_features(df):
         
 
         for w in [5, 10, 15, 30, 60]:
-            df[f'realized_vol_{w}{prefix}'] = ret.rolling(w, min_periods=2).std().bfill().fillna(0)
+            df[f'realized_vol_{w}{prefix}'] = ret.rolling(w, min_periods=2).std().fillna(0)
             
 
         for i in range(1, 6):
@@ -51,7 +57,7 @@ def build_proper_features(df):
 
     for lag in [1, 2, 3]:
         df[f'ret_lag{lag}'] = df['log_return'].shift(lag).fillna(0)
-        df[f'rvol10_lag{lag}'] = df['realized_vol_10'].shift(lag).bfill().fillna(0)
+        df[f'rvol10_lag{lag}'] = df['realized_vol_10'].shift(lag).fillna(0)
 
     df['mid_ratio_ETH_BTC'] = df['mid_price'] / (df['mid_price_BTC'] + 1e-8)
     df['ret_diff_ETH_BTC'] = df['log_return'] - df['log_return_BTC']

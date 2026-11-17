@@ -70,12 +70,17 @@ def main():
     rf_preds = rf_model.predict(X_val)
     rf_rmse = root_mean_squared_error(y_val, rf_preds)
 
+    scores = sorted([
+        ("LightGBM", lgb_rmse),
+        ("XGBoost", xgb_rmse),
+        ("Random Forest", rf_rmse)
+    ], key=lambda x: x[1])
+
     print("\n" + "="*45)
     print("     FINAL TUNED MODEL SCORES (RMSE)")
     print("="*45)
-    print(f" LightGBM:     {lgb_rmse:.8f}  (1st Place)")
-    print(f" XGBoost:      {xgb_rmse:.8f}  (2nd Place)")
-    print(f" Random Forest:{rf_rmse:.8f}  (3rd Place)")
+    for rank, (name, rmse_val) in enumerate(scores, start=1):
+        print(f" Rank {rank} | {name:<14}: {rmse_val:.8f}")
     print("="*45)
 
 if __name__ == "__main__":

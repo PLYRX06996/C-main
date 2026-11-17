@@ -121,7 +121,7 @@ def main():
         return corr
 
     optuna.logging.set_verbosity(optuna.logging.WARNING)
-    study = optuna.create_study(direction='maximize')
+    study = optuna.create_study(direction='maximize', sampler=optuna.samplers.TPESampler(seed=42))
     study.optimize(objective, n_trials=60)
 
     print(f"\nBest Optuna trial → r = {study.best_value:.6f}")
@@ -180,10 +180,10 @@ def main():
     os.makedirs(models_dir, exist_ok=True)
     best_corr = max(lgb_corr, xgb_corr)
     if lgb_corr >= xgb_corr:
-        joblib.dump(final_lgb, os.path.join(models_dir, 'v3_champion.joblib'))
+        joblib.dump(final_lgb, os.path.join(models_dir, 'stage2_best_model.joblib'))
         print(f"\nSelected Model: LightGBM (r={lgb_corr:.6f})")
     else:
-        joblib.dump(xgb_model, os.path.join(models_dir, 'v3_champion.joblib'))
+        joblib.dump(xgb_model, os.path.join(models_dir, 'stage2_best_model.joblib'))
         print(f"\nSelected Model: XGBoost (r={xgb_corr:.6f})")
 
     imp = pd.DataFrame({'feature': X.columns, 'importance': final_lgb.feature_importances_})

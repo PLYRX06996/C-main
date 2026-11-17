@@ -1,0 +1,21 @@
+# 8. Conclusion and Future Roadmap
+
+## 8.1 Summary of Research Findings
+This investigation conducted an empirical and econometric evaluation of 10-second forward realized volatility forecasting for Ethereum using Level-2 limit order book microstructure. Guided by Trustworthy AI principles, the study evaluated models across 605,938 continuous ticks under a strict 70/15/15 chronological three-way partitioning protocol.
+
+The key empirical findings are:
+1. **Raw Depth Insufficiency:** Raw Level-2 order book depth vectors carry negligible direct predictive signal for forward volatility ($r \in [-0.0189, 0.0947]$). Unconstrained tree models memorize microstructure noise rapidly within 5 to 6 boosting iterations.
+2. **Primacy of Volatility Memory:** Multi-scale realized volatility and continuous RiskMetrics EWMA features unlock the foundational signal, elevating predictive correlation from $0.095$ to $0.685$.
+3. **Power of Linear Regularization:** A regularized multi-asset HAR-style Ridge model on 30 stationary volatility features achieves an out-of-sample correlation of $r = 0.6860$, outperforming complex standalone gradient boosted trees ($r = 0.6749$ for XGBoost).
+4. **Failure of Complex Stacking:** Base tree learners exhibit extreme prediction collinearity ($r = 0.965$). In accordance with the Bates-Granger forecast combination puzzle, non-linear stacking meta-learners overfit validation residuals ($r = 0.6615$ on the 80/20 validation split vs $0.6910$ for linear SLSQP blending), while on held-out test data simple equal-weight blending ($r = 0.6828$) strictly outperforms validation-optimized SLSQP weights ($r = 0.6711$).
+5. **Peak Hybrid Performance:** The Econometric-Tree Hybrid—combining equal thirds of regularized Ridge, LightGBM, and XGBoost—achieves the peak out-of-sample benchmark of **Test $r = 0.6887$** and **Test RMSE $= 4.797 \times 10^{-5}$**, successfully synthesizing linear volatility memory with non-linear order book queue thresholding.
+6. **Integrity Transparency:** Transparent mathematical analysis of label construction confirmed that the forward 10-step rolling standard deviation window incorporates the contemporaneous return $r_t$. While features contain no future information, contemporaneous variance overlap contributes to short-memory predictability.
+
+## 8.2 Future Research Roadmap
+To build upon the foundations established in this research, five promising avenues for future quantitative investigation are proposed:
+
+1. **Deep Sequence Architectures (LSTM and TCN):** While static tabular models require handcrafted rolling features, deep sequential architectures—such as Long Short-Term Memory (LSTM) networks, Temporal Convolutional Networks (TCN), and State Space Models (Mamba)—can ingest raw sequential tick order books directly, potentially learning richer representation cascades across microsecond dynamics.
+2. **Order Flow and Trade Tape Integration:** Level-2 snapshots capture passive resting liquidity but omit active market order executions. Integrating Level-1 trade tape data—specifically Cumulative Volume Delta (CVD), trade sign aggressiveness, and tick-by-tick order flow imbalance—could provide leading indicators of imminent queue exhaustion.
+3. **Asymmetric QLIKE Objective Optimization:** Current tree implementations optimize standard mean squared error (MSE). Developing custom objective and Hessian functions in LightGBM and XGBoost targeting Patton's (2011) asymmetric QLIKE loss function would penalize volatility under-estimation, directly aligning models with institutional downside risk management.
+4. **Formal Statistical Testing:** Future work should execute block-bootstrap confidence intervals and formal Diebold-Mariano tests across rolling out-of-sample blocks to rigorously test the statistical significance of small incremental gains ($\Delta r \le 0.006$) among top-tier models.
+5. **Multi-Period Regime Expansion:** Evaluating the pipeline across extended multi-month cryptocurrency regimes, multi-token baskets (e.g., DeFi altcoins), and traditional equity index futures (e.g., S&P 500 E-mini) would establish whether our findings on the dominance of regularized linear memory generalize across diverse market microstructures.

@@ -1,5 +1,6 @@
 """
-Champion Feature Engineering & Volatility Modeling Pipeline (v4)
+Stage 4: Multi-Scale Continuous Microstructure & Volatility Pipeline
+====================================================================
 
 Integrates:
 1. Continuous time-series reconstruction (forward-fill price ticks to preserve data integrity).
@@ -27,7 +28,13 @@ warnings.filterwarnings('ignore')
 
 def load_and_merge(train_dir):
     print("Loading ETH, BTC, and SOL data...")
-    df_eth = pd.read_csv(os.path.join(train_dir, 'ETH.csv'))
+    eth_path = os.path.join(train_dir, 'ETH.csv')
+    if os.path.exists(eth_path):
+        df_eth = pd.read_csv(eth_path)
+    else:
+        df_eth1 = pd.read_csv(os.path.join(train_dir, 'ETH-01.csv'))
+        df_eth2 = pd.read_csv(os.path.join(train_dir, 'ETH-02.csv'))
+        df_eth = pd.concat([df_eth1, df_eth2], ignore_index=True)
     df_btc = pd.read_csv(os.path.join(train_dir, 'BTC.csv'))
     df_sol = pd.read_csv(os.path.join(train_dir, 'SOL.csv'))
 
@@ -39,9 +46,15 @@ def load_and_merge(train_dir):
 
     return pd.concat([df_eth, df_btc, df_sol], axis=1)
 
-def engineer_champion_features(df):
+def engineer_multiscale_features(df):
     print("Engineering multi-scale volatility & microstructure signals...")
     
+
+    for col in df.columns:
+        if 'price' in col and df[col].dtype in [np.float64, np.float32]:
+            df.loc[(df[col] <= 0.0) | (df[col] > 1e6), col] = np.nan
+            df[col] = df[col].ffill()
+
     for prefix in ['', '_BTC', '_SOL']:
 
         mid = df[f'mid_price{prefix}'].ffill()
@@ -55,11 +68,11 @@ def engineer_champion_features(df):
         
 
         for w in [5, 10, 15, 30, 60]:
-            df[f'realized_vol_{w}{prefix}'] = ret.rolling(w, min_periods=2).std().bfill().fillna(0)
+            df[f'realized_vol_{w}{prefix}'] = ret.rolling(w, min_periods=2).std().fillna(0)
             
 
         for span in [10, 30, 60]:
-            df[f'ewma_vol_{span}{prefix}'] = np.sqrt(df[f'ret_squared{prefix}'].ewm(span=span).mean()).bfill().fillna(0)
+            df[f'ewma_vol_{span}{prefix}'] = np.sqrt(df[f'ret_squared{prefix}'].ewm(span=span).mean()).fillna(0)
             
 
         for i in range(1, 6):
@@ -75,18 +88,20 @@ def engineer_champion_features(df):
         for w in [15, 30]:
             hi = df[f'ask_price5{prefix}'].rolling(w, min_periods=2).max()
             lo = df[f'bid_price5{prefix}'].rolling(w, min_periods=2).min()
-            df[f'norm_range_{w}{prefix}'] = ((hi - lo) / (mid + 1e-8)).bfill().fillna(0)
+            df[f'norm_range_{w}{prefix}'] = ((hi - lo) / (mid + 1e-8)).fillna(0)
             
 
     for lag in [1, 2, 3]:
         df[f'ret_lag{lag}'] = df['log_return'].shift(lag).fillna(0)
-        df[f'rvol10_lag{lag}'] = df['realized_vol_10'].shift(lag).bfill().fillna(0)
+        df[f'rvol10_lag{lag}'] = df['realized_vol_10'].shift(lag).fillna(0)
 
     df['mid_ratio_ETH_BTC'] = df['mid_price'] / (df['mid_price_BTC'] + 1e-8)
     df['mid_ratio_ETH_SOL'] = df['mid_price'] / (df['mid_price_SOL'] + 1e-8)
     df['ret_diff_ETH_BTC'] = df['log_return'] - df['log_return_BTC']
 
     return df
+
+engineer_champion_features = engineer_multiscale_features
 
 def clean_and_prepare(df):
     features = [c for c in df.columns if c not in ['timestamp', 'label']]
@@ -114,7 +129,7 @@ def main():
         train_dir = os.path.join(script_dir, '..', 'data', 'raw', 'train')
         
     df = load_and_merge(train_dir)
-    df = engineer_champion_features(df)
+    df = engineer_multiscale_features(df)
     X, y = clean_and_prepare(df)
     
 
@@ -122,7 +137,7 @@ def main():
     print(f"\nDataset shape: {len(X_train)} Train rows | {len(X_val)} Validation rows | {X.shape[1]} Features")
     
 
-    print("\n--- Training LightGBM Champion Model ---")
+    print("\n--- Training LightGBM Multi-Scale Model ---")
     lgb_model = lgb.LGBMRegressor(
         n_estimators=3000,
         learning_rate=0.04,
@@ -142,7 +157,7 @@ def main():
     lgb_corr, _ = pearsonr(y_val, lgb_preds)
     print(f"LightGBM Pearson Correlation (r): {lgb_corr:.6f} (stopped @ iter {lgb_model.best_iteration_})")
 
-    print("\n--- Training XGBoost Champion Model (CUDA) ---")
+    print("\n--- Training XGBoost Multi-Scale Model (CUDA) ---")
     xgb_model = xgb.XGBRegressor(
         n_estimators=3000,
         learning_rate=0.04,
@@ -167,12 +182,13 @@ def main():
     models_dir = os.path.join(script_dir, '..', 'models')
     os.makedirs(models_dir, exist_ok=True)
     
-    champion_model = lgb_model if lgb_corr >= xgb_corr else xgb_model
-    champion_name = "LightGBM" if lgb_corr >= xgb_corr else "XGBoost"
+    primary_model = lgb_model if lgb_corr >= xgb_corr else xgb_model
+    primary_name = "LightGBM" if lgb_corr >= xgb_corr else "XGBoost"
     best_corr = max(lgb_corr, xgb_corr)
     
-    joblib.dump(champion_model, os.path.join(models_dir, 'champion_model_v4.joblib'))
-    joblib.dump(list(X.columns), os.path.join(models_dir, 'champion_features_v4.joblib'))
+
+    joblib.dump(primary_model, os.path.join(models_dir, 'stage4_multiscale_best.joblib'))
+    joblib.dump(list(X.columns), os.path.join(models_dir, 'stage4_multiscale_features.joblib'))
     
     print("\n" + "="*65)
     print("                 BENCHMARK PROGRESSION (r)")
@@ -183,7 +199,7 @@ def main():
     print(f"  v4 LightGBM (Continuous + EWMA)  :  {lgb_corr:.6f}")
     print(f"  v4 XGBoost  (Continuous + EWMA)  :  {xgb_corr:.6f}")
     print("="*65)
-    print(f"\nSaved Best Model ({champion_name}, r={best_corr:.6f}) to models/champion_model_v4.joblib")
+    print(f"\nSaved Best Model ({primary_name}, r={best_corr:.6f}) to models/stage4_multiscale_best.joblib")
 
 if __name__ == "__main__":
     main()

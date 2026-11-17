@@ -92,10 +92,10 @@ def main():
         preds = model.predict(X_val_strict)
         return root_mean_squared_error(y_val, preds)
 
-    study = optuna.create_study(direction='minimize')
+    study = optuna.create_study(direction='minimize', sampler=optuna.samplers.TPESampler(seed=42))
     study.optimize(objective, n_trials=40)
 
-    print("\nStep 3: Final Ultimate Training on Best Params...")
+    print("\nStep 3: Final Model Training with Optimal Hyperparameters...")
     best_params = study.best_params
     best_params.update({
         'n_estimators': 15000,
@@ -117,7 +117,6 @@ def main():
     models_dir = os.path.join(script_dir, '..', 'models')
     os.makedirs(models_dir, exist_ok=True)
     joblib.dump(final_model, os.path.join(models_dir, 'tuned_feature_selected_xgboost.joblib'))
-    joblib.dump(final_model, os.path.join(models_dir, 'god_mode_xgboost.joblib'))
     joblib.dump(top_features, os.path.join(models_dir, 'top_features_list.joblib'))
 
 if __name__ == "__main__":

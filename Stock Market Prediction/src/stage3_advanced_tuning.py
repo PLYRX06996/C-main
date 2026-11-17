@@ -13,7 +13,16 @@ warnings.filterwarnings('ignore')
 
 def load_and_merge_data(eth_path, btc_path, sol_path):
     print("Loading datasets...")
-    df_eth = pd.read_csv(eth_path)
+    if os.path.exists(eth_path):
+        df_eth = pd.read_csv(eth_path)
+    else:
+        d = os.path.dirname(eth_path)
+        f1 = os.path.join(d, 'ETH-01.csv')
+        f2 = os.path.join(d, 'ETH-02.csv')
+        if os.path.exists(f1) and os.path.exists(f2):
+            df_eth = pd.concat([pd.read_csv(f1), pd.read_csv(f2)], ignore_index=True)
+        else:
+            raise FileNotFoundError(f"Neither {eth_path} nor split files {f1}, {f2} exist.")
     df_btc = pd.read_csv(btc_path)
     df_sol = pd.read_csv(sol_path)
 
@@ -105,7 +114,7 @@ def main():
         preds = model.predict(X_val)
         return root_mean_squared_error(y_val, preds)
 
-    xgb_study = optuna.create_study(direction='minimize')
+    xgb_study = optuna.create_study(direction='minimize', sampler=optuna.samplers.TPESampler(seed=42))
     xgb_study.optimize(xgb_objective, n_trials=30)
     print(f"Best XGB Tuning RMSE: {xgb_study.best_value}")
 
@@ -129,7 +138,7 @@ def main():
         preds = model.predict(X_val)
         return root_mean_squared_error(y_val, preds)
 
-    lgb_study = optuna.create_study(direction='minimize')
+    lgb_study = optuna.create_study(direction='minimize', sampler=optuna.samplers.TPESampler(seed=42))
     lgb_study.optimize(lgb_objective, n_trials=30)
     print(f"Best LGB Tuning RMSE: {lgb_study.best_value}")
 
@@ -172,7 +181,7 @@ def main():
     print(f_imp)
 
     models_dir = os.path.join(script_dir, '..', 'models')
-    joblib.dump(final_xgb, os.path.join(models_dir, 'ultimate_xgboost.joblib'))
+    joblib.dump(final_xgb, os.path.join(models_dir, 'stage3_tuned_xgboost.joblib'))
 
 if __name__ == "__main__":
     main()

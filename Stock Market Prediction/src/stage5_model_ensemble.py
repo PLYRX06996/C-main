@@ -25,7 +25,7 @@ from sklearn.metrics import root_mean_squared_error
 import lightgbm as lgb
 import xgboost as xgb
 
-from stage4_champion_pipeline import load_and_merge, engineer_champion_features, clean_and_prepare
+from stage4_multiscale_pipeline import load_and_merge, engineer_multiscale_features, clean_and_prepare
 
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
@@ -43,7 +43,7 @@ def main():
     print(" Stage 5: Multi-Model Ensemble Pipeline (LightGBM + XGBoost)")
 
     df = load_and_merge(train_dir)
-    df = engineer_champion_features(df)
+    df = engineer_multiscale_features(df)
     X, y = clean_and_prepare(df)
 
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, shuffle=False)

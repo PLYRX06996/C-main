@@ -14,22 +14,32 @@
 # Ensure execution from project root
 cd "$(dirname "$0")"
 
-# Explicitly activate local virtual environment
+# Activate virtual environment if present
 if [ -f ".venv/bin/activate" ]; then
     source .venv/bin/activate
+elif [ -f "venv/bin/activate" ]; then
+    source venv/bin/activate
+elif [ -f "env/bin/activate" ]; then
+    source env/bin/activate
 fi
 
-# Always prioritize local virtual environment Python
-if [ -f ".venv/bin/python" ]; then
+# Prioritize virtual environment Python, fallback to system python3 or python
+if [ -x ".venv/bin/python" ]; then
     PYTHON_BIN=".venv/bin/python"
+elif [ -x "venv/bin/python" ]; then
+    PYTHON_BIN="venv/bin/python"
+elif [ -x "env/bin/python" ]; then
+    PYTHON_BIN="env/bin/python"
+elif command -v python3 >/dev/null 2>&1; then
+    PYTHON_BIN="$(command -v python3)"
 else
-    PYTHON_BIN="$(which python)"
+    PYTHON_BIN="$(command -v python)"
 fi
 echo "Using Python: $PYTHON_BIN"
 export PYTHONUNBUFFERED=1
 
 if [ "$#" -eq 0 ] || [ "$1" = "all" ]; then
-    SCRIPTS=(src/stage*.py)
+    SCRIPTS=(src/stage*.py src/eval_rigorous_test_benchmark.py src/verify_data_integrity.py)
     FILTER="all"
 else
     SCRIPTS=()
