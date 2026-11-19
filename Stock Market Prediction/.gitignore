@@ -13,19 +13,11 @@ __pycache__/
 .pytest_cache/
 
 # Datasets & Large Artifacts
-data/raw/
+data/
+*.csv
 *.parquet
 *.h5
 *.pt
-
-# Exclude raw tabular CSVs but preserve model & benchmark evaluation results
-*.csv
-!models/*.csv
-!reports/*.csv
-
-# Processed App Cache
-!data/processed/app_cache.joblib
-!data/processed/.gitkeep
 
 # Model Backups & Temporary Weights
 *.bak

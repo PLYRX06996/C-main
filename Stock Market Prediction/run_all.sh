@@ -14,26 +14,20 @@
 # Ensure execution from project root
 cd "$(dirname "$0")"
 
-# Activate virtual environment if present
-if [ -f ".venv/bin/activate" ]; then
-    source .venv/bin/activate
-elif [ -f "venv/bin/activate" ]; then
-    source venv/bin/activate
-elif [ -f "env/bin/activate" ]; then
-    source env/bin/activate
+# Explicitly activate local virtual environment
+if [ ! -f ".venv/bin/activate" ] && [ -d "../../Secondary/TAI_project/.venv" ]; then
+    ln -sfn "../../Secondary/TAI_project/.venv" .venv
 fi
 
-# Prioritize virtual environment Python, fallback to system python3 or python
-if [ -x ".venv/bin/python" ]; then
+if [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate
+fi
+
+# Always prioritize local virtual environment Python
+if [ -f ".venv/bin/python" ]; then
     PYTHON_BIN=".venv/bin/python"
-elif [ -x "venv/bin/python" ]; then
-    PYTHON_BIN="venv/bin/python"
-elif [ -x "env/bin/python" ]; then
-    PYTHON_BIN="env/bin/python"
-elif command -v python3 >/dev/null 2>&1; then
-    PYTHON_BIN="$(command -v python3)"
 else
-    PYTHON_BIN="$(command -v python)"
+    PYTHON_BIN="$(which python)"
 fi
 echo "Using Python: $PYTHON_BIN"
 export PYTHONUNBUFFERED=1
